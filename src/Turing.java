@@ -17,7 +17,9 @@
 import info.gridworld.actor.ActorWorld;
 import info.gridworld.actor.Bug;
 import info.gridworld.actor.Rock;
-
+import info.gridworld.grid.BoundedGrid;
+import info.gridworld.actor.Actor;
+import java.util.Scanner;
 /**
  * This class runs a world that contains a bug and a rock, added at random
  * locations. Click on empty locations to add additional actors. Click on
@@ -30,10 +32,23 @@ public class Turing
 {
     public static void main(String[] args)
     {
-        ActorWorld world = new ActorWorld();
-        world.add(new Bug());
-        world.add(new Rock());
+    	int tamanio = 600;
+        ActorWorld world = new ActorWorld(new BoundedGrid<Actor>(2,tamanio));
+        MaquinaTuring maquina= new MaquinaTuring(world,tamanio);
+        
         world.show();
+        
+        Parser p = new Parser ("programa.txt");
+        maquina.cargarTransiciones(p.transiciones);
+       
+        solicitarPaso (maquina);
+    }
+    
+    public static void solicitarPaso (MaquinaTuring m){
+
+        Scanner in = new Scanner (System.in);
+        while (true)
+        	m.paso(in.nextInt());
     }
 }
 
@@ -46,6 +61,7 @@ class MaquinaTuring {
 	int tamanio;
 	MaquinaTuring (ActorWorld w, int t)
 	{
+		this.cinta = new int [t];
 		this.tamanio = t; 
 		this.world = w;
 	}
@@ -55,12 +71,15 @@ class MaquinaTuring {
 		this.transiciones = t; 
 	}
 	
-	boolean cargarCinta (int [] i)
+	boolean cargarCinta (int [] c)
 	{
-		if (i.length < this.tamanio)
+		if (this.tamanio < c.length)
 			return false;
-		 
-		this.cinta = i;
+		
+		this.posicion = (this.tamanio-c.length)/2;
+		for (int i = 0;i < c.length; ++i)
+			this.cinta[i+this.posicion] = c[i];
+		
 		return true;
 	}
 		
@@ -75,21 +94,26 @@ class MaquinaTuring {
 		return null; 
 	}
 	
-	void paso ()
+	/**
+	 * @param veces
+	 */
+	void paso (int veces)
 	{
-		Transicion t = buscarTransicion (this.estado,this.cinta[this.posicion]);
-		if (t==null)
-			fin ();
-		else 
-		{
-		this.estado = t.nuevoValorMaquina;
-		this.cinta [this.posicion] = t.nuevoValorCinta;
-		if (t.direccion == -1) 
-			this.posicion --;
-		else 
-			this.posicion ++;
+		for(int i = 0; i < veces; i++){
+			Transicion t = buscarTransicion (this.estado,this.cinta[this.posicion]);
+			if (t==null)
+				fin ();
+			else 
+			{
+			this.estado = t.nuevoValorMaquina;
+			this.cinta [this.posicion] = t.nuevoValorCinta;
+			if (t.direccion == -1) 
+				this.posicion --;
+			else 
+				this.posicion ++;
+			}
+			actualizar();
 		}
-		actualizar();
 	}
 	
 	void fin ()
