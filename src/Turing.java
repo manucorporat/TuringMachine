@@ -18,6 +18,7 @@ import info.gridworld.actor.ActorWorld;
 import info.gridworld.actor.Bug;
 import info.gridworld.actor.Rock;
 import info.gridworld.grid.BoundedGrid;
+import info.gridworld.grid.Location;
 import info.gridworld.actor.Actor;
 import java.util.Scanner;
 /**
@@ -59,11 +60,15 @@ class MaquinaTuring {
 	int estado; 
 	int posicion;
 	int tamanio;
+	Bug cabezal;
+	
 	MaquinaTuring (ActorWorld w, int t)
 	{
 		this.cinta = new int [t];
 		this.tamanio = t; 
 		this.world = w;
+		this.cabezal = new Bug();
+		world.add(this.cabezal);
 	}
 	
 	void cargarTransiciones (Transicion [] t)
@@ -119,10 +124,15 @@ class MaquinaTuring {
 	void fin ()
 	{
 		System.out.println("FIN");
+		
+		for(int i = 0; i<this.tamanio; ++i)
+			System.out.print(this.cinta[i]+ " ");
+		System.out.println();
 	}
 	
 	void actualizar ()
 	{
+		this.cabezal.moveTo(new Location(0, this.posicion));
 		
 	}
 }
