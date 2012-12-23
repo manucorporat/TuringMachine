@@ -36,3 +36,70 @@ public class Turing
         world.show();
     }
 }
+
+class MaquinaTuring {
+	ActorWorld world; 
+	Transicion[] transiciones;
+	int [] cinta; 
+	int estado; 
+	int posicion;
+	int tamanio;
+	MaquinaTuring (ActorWorld w, int t)
+	{
+		this.tamanio = t; 
+		this.world = w;
+	}
+	
+	void cargarTransiciones (Transicion [] t)
+	{
+		this.transiciones = t; 
+	}
+	
+	boolean cargarCinta (int [] i)
+	{
+		if (i.length < this.tamanio)
+			return false;
+		 
+		this.cinta = i;
+		return true;
+	}
+		
+	Transicion buscarTransicion (int estado, int cinta)
+	{
+		for (int i=0; i<this.transiciones.length; ++i)
+		{
+			Transicion t = this.transiciones[i];
+			if (t.valorMaquina==estado && t.valorCinta==cinta)
+				return t;
+		}
+		return null; 
+	}
+	
+	void paso ()
+	{
+		Transicion t = buscarTransicion (this.estado,this.cinta[this.posicion]);
+		if (t==null)
+			fin ();
+		else 
+		{
+		this.estado = t.nuevoValorMaquina;
+		this.cinta [this.posicion] = t.nuevoValorCinta;
+		if (t.direccion == -1) 
+			this.posicion --;
+		else 
+			this.posicion ++;
+		}
+		actualizar();
+	}
+	
+	void fin ()
+	{
+		System.out.println("FIN");
+	}
+	
+	void actualizar ()
+	{
+		
+	}
+}
+
