@@ -60,10 +60,24 @@ class Parser
 			return false;
 		
 		t.valorMaquina = Integer.parseInt(zonas[0]);
+		if(t.valorMaquina < 0 || t.valorMaquina > 6)
+			return false;
+		
 		t.valorCinta = Integer.parseInt(zonas[1]);
+		if(t.valorCinta < 0 || t.valorCinta > 1)
+			return false;
+		
 		t.nuevoValorMaquina = Integer.parseInt(zonas[2]);
+		if(t.nuevoValorMaquina < 0 || t.nuevoValorMaquina > 5)
+			return false;
+		
 		t.nuevoValorCinta = Integer.parseInt(zonas[3]);
+		if(t.nuevoValorCinta < 0 || t.nuevoValorCinta > 6)
+			return false;
+		
 		t.direccion = Integer.parseInt(zonas[4]);
+		if(t.direccion != -1 || t.direccion != 1)
+			return false;
 
 		return true;
 	}
