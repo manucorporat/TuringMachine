@@ -84,7 +84,7 @@ class Parser
 	}
 	
 	
-	protected int parseZone(String subZone)
+	protected int parseZone(String subZone, int min, int max)
 	{
 		char first = subZone.charAt(0);
 		switch(first) {
@@ -98,7 +98,11 @@ class Parser
 			return MaquinaTuring.valorBlanco;
 			
 		default:
-			return Integer.parseInt(subZone);
+			int r = Integer.parseInt(subZone);
+			if(r < min || r > max)
+				throw new IllegalStateException("Out of range ["+min+", "+max+"]");
+			
+			return r;
 		}
 	}
 	
@@ -110,11 +114,11 @@ class Parser
 		if(zonas.length < 5)
 			return false;
 		
-		t.valorMaquina = parseZone(zonas[0]);
-		t.valorCinta = parseZone(zonas[1]);
-		t.nuevoValorMaquina = parseZone(zonas[2]);
-		t.nuevoValorCinta = parseZone(zonas[3]);
-		t.direccion = parseZone(zonas[4]);
+		t.valorMaquina = parseZone(zonas[0], 0, 100000);
+		t.valorCinta = parseZone(zonas[1], 0, 1);
+		t.nuevoValorMaquina = parseZone(zonas[2], 0, 10000);
+		t.nuevoValorCinta = parseZone(zonas[3], 0, 6);
+		t.direccion = parseZone(zonas[4], -1, 1);
 		
 		return true;
 	}
