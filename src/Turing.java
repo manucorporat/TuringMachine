@@ -34,7 +34,7 @@ public class Turing
     public static void main(String[] args)
     {    	
     	final int size = 40;
-        int tape[] = {0,0, 0, 0};
+        int tape[] = {0, 0, 0, 0};
 
         TuringMachine machine= new TuringMachine("increment", size);
         machine.loadTape(tape);

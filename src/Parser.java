@@ -74,7 +74,7 @@ class Parser
 		System.out.println("Parsing \""+filename+"\"");
 		
 		this.nuRules = 0;
-		try{
+		try {
 			Scanner sc = new Scanner(new File(filename));
 			
 			while (sc.hasNextLine()) {
@@ -102,7 +102,7 @@ class Parser
 				++this.nuRules;
 			}
 			
-		}catch (Exception e){ //Catch exception if any
+		} catch (Exception e){
 			System.err.println("Error: " + e.getMessage());
 			return false;
 		}
@@ -142,15 +142,15 @@ class Parser
 			throw new IllegalStateException("Missing 5-tuplas rule.");
 		
 		
-		t.machineState = parseZone(zonas[0], 0, 100000);
-		t.tapeSymbol = parseZone(zonas[1], 0, 1);
-		t.newState = parseZone(zonas[2], 0, 10000);
-		t.newSymbol = parseZone(zonas[3], 0, 6);
-		t.direction = parseZone(zonas[4], -1, 1);		
+		t.machineState	= parseZone(zonas[0], 0, 100000);
+		t.tapeSymbol	= parseZone(zonas[1], 0, 1);
+		t.newState		= parseZone(zonas[2], 0, 10000);
+		t.newSymbol		= parseZone(zonas[3], 0, 6);
+		t.direction		= parseZone(zonas[4], -1, 1);		
 	}
 	
 	
-	protected void print(Rule t)
+	public void print(Rule t)
 	{
 		System.out.printf("%3d %3d %3d %3d %3d \n",
 				t.machineState,
