@@ -34,12 +34,12 @@ class TuringMachine
 	
 	void reset()
 	{
-		// Reset tape, blank state is all fields.
+		// Reset tape, blank state is in all fields.
 		this.tape = new int [this.size];
 		for(int i = 0; i < this.size; ++i)
 			this.tape[i] = valueBLANK;
 		
-		// Reset machine state.
+		// Reset machine's state.
 		this.state = 0;
 	}
 	
@@ -69,7 +69,7 @@ class TuringMachine
 	
 	Rule findRule (int state, int symbol)
 	{
-		// sequential search matching state and symbol.
+		// sequential search, matching state and symbol.
 		for (int i = 0; i < this.nuRules; ++i) {
 			Rule t = this.rules[i];
 			if ((t.machineState==state || t.machineState==valueANY) &&
@@ -119,6 +119,7 @@ class TuringMachine
 					this.state = t.newState;
 				
 			}
+			++i;
 		}
 	}
 	
@@ -149,6 +150,7 @@ class TuringMachine
 		}
 		System.out.println();
 	}
+	
 	
 	void help()
 	{
