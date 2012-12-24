@@ -75,7 +75,9 @@ class MaquinaTuring
 				break;
 			
 			}else 
-			{				
+			{		
+				actualizar();
+
 				if(t.nuevoValorCinta != valorComodin)
 					this.cinta[this.posicion] = t.nuevoValorCinta;
 				
@@ -91,7 +93,6 @@ class MaquinaTuring
 				}else if(t.nuevoValorMaquina != valorComodin)
 					this.estado = t.nuevoValorMaquina;
 			}
-			actualizar();
 		}
 	}
 	
@@ -109,17 +110,23 @@ class MaquinaTuring
 	
 	void actualizar ()
 	{
+		System.out.print("E:"+this.estado);
+
 		for(int e = 0; e < this.tamanio; ++e) {
-			if(this.cinta[e] == -2)
-				System.out.print("_ ");
+			if(this.posicion == e)
+				System.out.print("|");
 			else
-				System.out.print(this.cinta[e]+" ");
+				System.out.print(" ");
+
+			if(this.cinta[e] == -2)
+				System.out.print("_");
+			else
+				System.out.print(this.cinta[e]);
 
 		}
 		System.out.println();
 
 		//this.cabezal.moveTo(new Location(0, this.posicion));
-		
 	}
 }
 

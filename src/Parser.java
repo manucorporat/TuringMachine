@@ -122,7 +122,7 @@ class Parser
 	
 	protected void print(Transicion t)
 	{
-		System.out.printf("%d %d %d %d %d \n",
+		System.out.printf("%3d %3d %3d %3d %3d \n",
 				t.valorMaquina,
 				t.valorCinta,
 				t.nuevoValorMaquina,
