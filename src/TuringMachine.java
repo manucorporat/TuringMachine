@@ -1,5 +1,3 @@
-import info.gridworld.actor.ActorWorld;
-
 
 class TuringMachine
 {
@@ -16,20 +14,31 @@ class TuringMachine
 	
 	TuringMachine (String filename, int t)
 	{
+		assert(t > 0);
+
+		// Allocate tape
 		this.tape = new int [t];
-		for(int i = 0; i < t; ++i)
-			this.tape[i] = valueBLANK;
+		this.size = t;
 		
-		this.size = t; 
-		this.state = 0;
+		// Reset machine
+		reset();
 		
+		// Load and parse program.
         Parser p = new Parser (filename);
         if(p.hasRules())
         	loadRules(p.getRules(), p.getNumberOfRules());
-        
-        //if(p.hasTape()) {
-        //	cargarCinta(p.cinta);
-        //}   
+	}
+	
+	
+	void reset()
+	{
+		// Reset tape, blank state is all fields.
+		this.tape = new int [this.size];
+		for(int i = 0; i < this.size; ++i)
+			this.tape[i] = valueBLANK;
+		
+		// Reset machine state.
+		this.state = 0;
 	}
 	
 	
@@ -57,6 +66,7 @@ class TuringMachine
 	
 	Rule findRule (int state, int symbol)
 	{
+		// sequential search matching state and symbol.
 		for (int i = 0; i < this.nuRules; ++i) {
 			Rule t = this.rules[i];
 			if ((t.machineState==state || t.machineState==valueANY) &&
@@ -68,17 +78,21 @@ class TuringMachine
 	
 	
 	void step (int times)
-	{
-		for(int i = 0; i < times; i++)
+	{	
+		int i = 0;
+		while(i < times)
 		{
+			// Find rule for current state and current symbol.
 			Rule t = findRule(this.state, this.tape[this.position]);
 			
-			if (t == null) {
-				end ();
-				break;
-			
-			}else 
-			{		
+			// if the rule was not found, then we stop the machine.
+			if(t == null ) {
+				end();
+				i = times; // break; (but we can not use break;)
+				
+			}else
+			{
+				// updates gridworld and prints logs in console.
 				update();
 
 				// update symbol
@@ -96,10 +110,11 @@ class TuringMachine
 				// update machine's state
 				if(t.newState == valueEND) {
 					end();
-					break;
+					i = times; // break; (but we can not use break;)
 					
 				}else if(t.newState != valueANY)
 					this.state = t.newState;
+				
 			}
 		}
 	}
@@ -107,7 +122,7 @@ class TuringMachine
 	
 	void end ()
 	{
-		// At the end, reset state
+		// At the end, we reset the machine's state to 0.
 		this.state = 0;
 		System.out.println("END");
 	}
@@ -132,4 +147,3 @@ class TuringMachine
 		System.out.println();
 	}
 }
-
