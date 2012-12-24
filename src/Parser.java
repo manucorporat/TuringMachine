@@ -26,6 +26,7 @@ class Parser
 	private final int maxRules = 200;
 	public final static char charA = 'a';
 	public final static char charB = 'b';
+	public final static char charC = 'c';
 	public final static char charX = 'x';
 	public final static char charY = 'y';
 	public final static char charANY = '*';
@@ -119,6 +120,9 @@ class Parser
 		case charB:
 			return TuringMachine.valueB;
 			
+		case charC:
+			return TuringMachine.valueC;
+				
 		case charX:
 			return TuringMachine.valueX;
 			

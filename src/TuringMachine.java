@@ -7,8 +7,9 @@ class TuringMachine
 	
 	final static int valueA = -5;
 	final static int valueB = -6;
-	final static int valueX = -7;
-	final static int valueY = -8;
+	final static int valueC = -7;
+	final static int valueX = -8;
+	final static int valueY = -9;
 
 
 	Rule[] rules;
@@ -86,7 +87,7 @@ class TuringMachine
 	}
 	
 	
-	void step (int times)
+	void step (int times, boolean sleep)
 	{	
 		int i = 0;
 		while(i < times)
@@ -101,6 +102,12 @@ class TuringMachine
 				
 			}else
 			{
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				// updates gridworld and prints logs in console.
 				update();
 
@@ -170,6 +177,8 @@ class TuringMachine
 			System.out.print(Parser.charA); break;
 		case valueB:
 			System.out.print(Parser.charB); break;
+		case valueC:
+			System.out.print(Parser.charC); break;
 		case valueX:
 			System.out.print(Parser.charX); break;
 		case valueY:

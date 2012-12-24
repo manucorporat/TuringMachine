@@ -33,9 +33,9 @@ public class Turing
 {
     public static void main(String[] args)
     {    	
-    	final int size = 45;
-        int tape[] = {1,1,0,1,1,0, TuringMachine.valueBLANK ,1,0,1,0,1,1};
-        //int tape[] = {0,0,0,0,0};
+    	final int size = 50;
+        //int tape[] = {TuringMachine.valueBLANK};
+        int tape[] = {1,1,0,1,1,0,0,0, TuringMachine.valueBLANK ,1,1,1,1,0,1,0,1,1};
 
 
         TuringMachine machine= new TuringMachine("adding", size);
@@ -50,7 +50,12 @@ public class Turing
     public static void requestStep (TuringMachine m){
 
         Scanner in = new Scanner (System.in);
-        while (true)
-        	m.step(in.nextInt());
+        while (true) {
+        	int t = in.nextInt();
+        	if(t >= 0)
+            	m.step(t, false);
+        	else
+            	m.step(-t, true);
+        }
     }
 }
