@@ -1,9 +1,15 @@
 
 class TuringMachine
 {
-	final static int valueANY = -4;
-	final static int valueEND = -3;
 	final static int valueBLANK = -2;
+	final static int valueANY = -3;
+	final static int valueEND = -4;
+	
+	final static int valueA = -5;
+	final static int valueB = -6;
+	final static int valueX = -7;
+	final static int valueY = -8;
+
 
 	Rule[] rules;
 	int [] tape;
@@ -110,14 +116,22 @@ class TuringMachine
 					this.position++;
 				
 				
-				// update machine's state
-				if(t.newState == valueEND) {
+				if(this.position < 0 || this.position >= this.size) {
+					System.out.println("Not enought memory, turing machine aborted.");
+					this.position = 0;
 					end();
 					i = times; // break; (but we can not use break;)
 					
-				}else if(t.newState != valueANY)
-					this.state = t.newState;
-				
+				}else
+				{
+					// update machine's state
+					if(t.newState == valueEND) {
+						end();
+						i = times; // break; (but we can not use break;)
+						
+					}else if(t.newState != valueANY)
+						this.state = t.newState;
+				}
 			}
 			++i;
 		}
@@ -128,13 +142,14 @@ class TuringMachine
 	{
 		// At the end, we reset the machine's state to 0.
 		this.state = 0;
+		update ();
 		System.out.println("END");
 	}
 	
 	
 	void update ()
 	{
-		System.out.print("E:"+this.state);
+		System.out.printf("E:%2d",this.state);
 
 		for(int e = 0; e < this.size; ++e) {
 			if(this.position == e)
@@ -142,15 +157,33 @@ class TuringMachine
 			else
 				System.out.print(" ");
 
-			if(this.tape[e] == -2)
-				System.out.print("_");
-			else
-				System.out.print(this.tape[e]);
-
+			printValue(this.tape[e]);
 		}
 		System.out.println();
 	}
 	
+	
+	public static void printValue(int value)
+	{
+		switch(value) {
+		case valueA:
+			System.out.print(Parser.charA); break;
+		case valueB:
+			System.out.print(Parser.charB); break;
+		case valueX:
+			System.out.print(Parser.charX); break;
+		case valueY:
+			System.out.print(Parser.charY); break;
+		case valueANY:
+			System.out.print(Parser.charANY); break;
+		case valueBLANK:
+			System.out.print(Parser.charBLANK); break;
+		case valueEND:
+			System.out.print(Parser.charEND); break;
+		default:
+			System.out.print(value);break;
+		}
+	}
 	
 	void help()
 	{

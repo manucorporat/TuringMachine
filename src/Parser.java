@@ -21,15 +21,17 @@ class Rule
 	}
 }
 
-
 class Parser
 {
 	private final int maxRules = 200;
-	public final static int charANY = '*';
-	public final static int charEND = 'h';
-	public final static int charBLANK = 'b';
+	public final static char charA = 'a';
+	public final static char charB = 'b';
+	public final static char charX = 'x';
+	public final static char charY = 'y';
+	public final static char charANY = '*';
+	public final static char charEND = 'h';
+	public final static char charBLANK = '_';
 
-	
 	protected Rule [] rules;
 	protected int nuRules;
 
@@ -93,7 +95,6 @@ class Parser
 					print(t);
 				} catch(Exception e) {
 					System.out.println("Error at line "+(this.nuRules+1));
-					// the exception is rethrown.
 					throw e;
 				}
 				++this.nuRules;
@@ -112,6 +113,18 @@ class Parser
 	{
 		char first = subZone.charAt(0);
 		switch(first) {
+		case charA:
+			return TuringMachine.valueA;
+			
+		case charB:
+			return TuringMachine.valueB;
+			
+		case charX:
+			return TuringMachine.valueX;
+			
+		case charY:
+			return TuringMachine.valueY;
+			
 		case charANY:
 			return TuringMachine.valueANY;
 			
@@ -138,14 +151,22 @@ class Parser
 		if(zonas.length < 5)
 			throw new IllegalStateException("Missing 5-tuplas rule.");
 		
-		
+		//*
 		t.machineState	= parseZone(zonas[0], 0, 100000);
 		t.tapeSymbol	= parseZone(zonas[1], 0, 1);
 		t.newState		= parseZone(zonas[2], 0, 10000);
 		t.newSymbol		= parseZone(zonas[3], 0, 6);
-		t.direction		= parseZone(zonas[4], -1, 1);		
+		t.direction		= parseZone(zonas[4], -1, 1);
+		//*/
+		/*
+		t.machineState	= parseZone(zonas[0], 0, 100000);
+		t.tapeSymbol	= parseZone(zonas[1], 0, 100000);
+		t.newState		= parseZone(zonas[4], 0, 100000);
+		t.newSymbol		= parseZone(zonas[2], 0, 100000);
+		t.direction		= parseZone(zonas[3], -1, 1);
+		//*/
 	}
-	
+
 	
 	public void print(Rule t)
 	{

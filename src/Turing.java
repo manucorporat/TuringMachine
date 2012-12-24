@@ -33,10 +33,12 @@ public class Turing
 {
     public static void main(String[] args)
     {    	
-    	final int size = 40;
-        int tape[] = {0, 0, 0, 0};
+    	final int size = 45;
+        int tape[] = {1,1,0,1,1,0, TuringMachine.valueBLANK ,1,0,1,0,1,1};
+        //int tape[] = {0,0,0,0,0};
 
-        TuringMachine machine= new TuringMachine("increment", size);
+
+        TuringMachine machine= new TuringMachine("adding", size);
         machine.loadTape(tape);
         
         requestStep (machine);
