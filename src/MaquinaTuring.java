@@ -7,8 +7,6 @@ class MaquinaTuring
 	final static int valorFin = -3;
 	final static int valorBlanco = -2;
 
-	
-	ActorWorld world; 
 	Transicion[] transiciones;
 	int [] cinta; 
 	int estado; 
@@ -25,9 +23,9 @@ class MaquinaTuring
 		this.estado = 0;
 		
         Parser p = new Parser (filename);
-        if(p.hayTransiciones)
+        if(p.hayTransiciones())
         	cargarTransiciones(p.transiciones);
-        if(p.hayCinta) {
+        if(p.hayCinta()) {
         	//cargarCinta(p.cinta);
         }   
 	}

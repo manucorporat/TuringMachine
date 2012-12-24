@@ -35,23 +35,29 @@ class Parser
 	
 	public Transicion [] transiciones;
 	public int nuTransiciones;
-	public boolean hayTransiciones;
-	public boolean hayCinta;
 
 	
 	Parser(String filename)
-	{
-		this.hayTransiciones = true;
-		this.hayCinta = false;
-		
+	{		
 		this.transiciones = new Transicion[200];
 		for(int i = 0; i < 200; ++i)
 			this.transiciones[i] = new Transicion();
 		
-		this.nuTransiciones = 0;
-		
+		this.nuTransiciones = 0;		
 		
 		readFile(filename);
+	}
+	
+	
+	public boolean hayTransiciones()
+	{
+		return (this.nuTransiciones > 0);
+	}
+	
+	
+	public boolean hayCinta()
+	{
+		return false;
 	}
 	
 
@@ -67,11 +73,13 @@ class Parser
 				String strLine = sc.nextLine();
 				Transicion t = this.transiciones[this.nuTransiciones];
 				
-				if(parseLine(strLine, t))
+				try {
+					parseLine(strLine, t);
 					print(t);
-				else {
-					System.out.println("Error reading line "+(this.nuTransiciones+1));
-					return false;
+				} catch(Exception e) {
+					System.out.println("Error at line "+(this.nuTransiciones+1));
+					// the exception is rethrown.
+					throw e;
 				}
 				++this.nuTransiciones;
 			}
@@ -80,6 +88,7 @@ class Parser
 			System.err.println("Error: " + e.getMessage());
 			return false;
 		}
+		
 		return true;
 	}
 	
@@ -107,20 +116,19 @@ class Parser
 	}
 	
 	
-	protected boolean parseLine(String line, Transicion t)
+	protected void parseLine(String line, Transicion t)
 	{		
 		String[] zonas = line.split("\\s+");
 
 		if(zonas.length < 5)
-			return false;
+			throw new IllegalStateException("Missing 5-tuplas function.");
+		
 		
 		t.valorMaquina = parseZone(zonas[0], 0, 100000);
 		t.valorCinta = parseZone(zonas[1], 0, 1);
 		t.nuevoValorMaquina = parseZone(zonas[2], 0, 10000);
 		t.nuevoValorCinta = parseZone(zonas[3], 0, 6);
-		t.direccion = parseZone(zonas[4], -1, 1);
-		
-		return true;
+		t.direccion = parseZone(zonas[4], -1, 1);		
 	}
 	
 	
