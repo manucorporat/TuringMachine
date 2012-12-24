@@ -16,6 +16,8 @@ class TuringMachine
 	{
 		assert(t > 0);
 
+		help();
+		
 		// Allocate tape
 		this.tape = new int [t];
 		this.size = t;
@@ -44,6 +46,7 @@ class TuringMachine
 	
 	void loadRules (Rule [] t, int nuRules)
 	{
+		assert(nuRules > 0);
 		assert(t.length >= nuRules);
 		
 		this.rules = t;
@@ -145,5 +148,14 @@ class TuringMachine
 
 		}
 		System.out.println();
+	}
+	
+	void help()
+	{
+		System.out.println("***** HELP *****");
+		System.out.printf("%d: Blank value.\n", valueBLANK);
+		System.out.printf("%d: It's a wildcard: it matches any symbol/state.\n", valueANY);
+		System.out.printf("%d: End value.\n", valueEND);
+		System.out.println("****************\n");
 	}
 }
