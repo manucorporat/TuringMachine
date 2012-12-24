@@ -1,130 +1,130 @@
 import info.gridworld.actor.ActorWorld;
 
 
-class MaquinaTuring
+class TuringMachine
 {
-	final static int valorComodin = -4;
-	final static int valorFin = -3;
-	final static int valorBlanco = -2;
+	final static int valueANY = -4;
+	final static int valueEND = -3;
+	final static int valueBLANK = -2;
 
-	Transicion[] transiciones;
-	int [] cinta; 
-	int estado; 
-	int posicion;
-	int tamanio;
+	Rule[] rules;
+	int [] tape; 
+	int state; 
+	int position;
+	int size;
 	
-	MaquinaTuring (String filename, int t)
+	TuringMachine (String filename, int t)
 	{
-		this.cinta = new int [t];
+		this.tape = new int [t];
 		for(int i = 0; i < t; ++i)
-			this.cinta[i] = valorBlanco;
+			this.tape[i] = valueBLANK;
 		
-		this.tamanio = t; 
-		this.estado = 0;
+		this.size = t; 
+		this.state = 0;
 		
         Parser p = new Parser (filename);
-        if(p.hayTransiciones())
-        	cargarTransiciones(p.transiciones);
-        if(p.hayCinta()) {
+        if(p.hasRules())
+        	loadRules(p.getRules());
+        if(p.hasTape()) {
         	//cargarCinta(p.cinta);
         }   
 	}
 	
 	
-	void cargarTransiciones (Transicion [] t)
+	void loadRules (Rule [] t)
 	{
-		this.transiciones = t; 
+		this.rules = t; 
 	}
 	
 	
-	boolean cargarCinta (int [] c)
+	boolean loadTape (int [] c)
 	{
-		if (this.tamanio < c.length)
+		if (this.size < c.length)
 			return false;
 		
-		this.posicion = (this.tamanio-c.length)/2;
+		this.position = (this.size-c.length)/2;
 		for (int i = 0;i < c.length; ++i)
-			this.cinta[i+this.posicion] = c[i];
+			this.tape[i+this.position] = c[i];
 		
 		return true;
 	}
 	
 	
-	Transicion buscarTransicion (int estado, int cinta)
+	Rule findRule (int state, int symbol)
 	{
-		for (int i = 0; i < this.transiciones.length; ++i) {
-			Transicion t = this.transiciones[i];
-			if ((t.valorMaquina==estado || t.valorMaquina==valorComodin) &&
-				(t.valorCinta==cinta || t.valorCinta==valorComodin))
+		for (int i = 0; i < this.rules.length; ++i) {
+			Rule t = this.rules[i];
+			if ((t.machineState==state || t.machineState==valueANY) &&
+				(t.tapeSymbol==symbol || t.tapeSymbol==valueANY))
 				return t;
 		}
 		return null; 
 	}
 	
 	
-	void paso (int veces)
+	void step (int times)
 	{
-		for(int i = 0; i < veces; i++)
+		for(int i = 0; i < times; i++)
 		{
-			Transicion t = buscarTransicion(this.estado, this.cinta[this.posicion]);
+			Rule t = findRule(this.state, this.tape[this.position]);
 			
 			if (t == null) {
-				fin ();
+				end ();
 				break;
 			
 			}else 
 			{		
-				actualizar();
+				update();
 
-				if(t.nuevoValorCinta != valorComodin)
-					this.cinta[this.posicion] = t.nuevoValorCinta;
+				// update symbol
+				if(t.newSymbol != valueANY)
+					this.tape[this.position] = t.newSymbol;
 				
-				if (t.direccion == -1) 
-					this.posicion--;
-				else if(t.direccion == 1)
-					this.posicion++;
 				
-				if(t.nuevoValorMaquina == valorFin) {
-					fin();
+				// update machine's position
+				if (t.direction == -1) 
+					this.position--;
+				else if(t.direction == 1)
+					this.position++;
+				
+				
+				// update machine's state
+				if(t.newState == valueEND) {
+					end();
 					break;
 					
-				}else if(t.nuevoValorMaquina != valorComodin)
-					this.estado = t.nuevoValorMaquina;
+				}else if(t.newState != valueANY)
+					this.state = t.newState;
 			}
 		}
 	}
 	
 	
-	void fin ()
+	void end ()
 	{
-		this.estado = 0;
-		System.out.println("FIN");
-		
-		//for(int i = 0; i < this.tamanio; ++i)
-		//	System.out.print(this.cinta[i]+" ");
-		System.out.println();
+		// At the end, reset state
+		this.state = 0;
+		System.out.println("END");
 	}
 	
 	
-	void actualizar ()
+	void update ()
 	{
-		System.out.print("E:"+this.estado);
+		System.out.print("E:"+this.state);
 
-		for(int e = 0; e < this.tamanio; ++e) {
-			if(this.posicion == e)
+		for(int e = 0; e < this.size; ++e) {
+			if(this.position == e)
 				System.out.print("|");
 			else
 				System.out.print(" ");
 
-			if(this.cinta[e] == -2)
+			if(this.tape[e] == -2)
 				System.out.print("_");
 			else
-				System.out.print(this.cinta[e]);
+				System.out.print(this.tape[e]);
 
 		}
 		System.out.println();
-
-		//this.cabezal.moveTo(new Location(0, this.posicion));
 	}
 }
 

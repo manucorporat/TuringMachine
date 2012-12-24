@@ -33,22 +33,22 @@ public class Turing
 {
     public static void main(String[] args)
     {    	
-    	final int tamanio = 40;
-        int cinta[] = {0,0, 0, 0};
+    	final int size = 40;
+        int tape[] = {0,0, 0, 0};
 
-        MaquinaTuring maquina= new MaquinaTuring("increment", tamanio);
-        maquina.cargarCinta(cinta);
+        TuringMachine machine= new TuringMachine("increment", size);
+        machine.loadTape(tape);
         
-        solicitarPaso (maquina);
+        requestStep (machine);
         
         //ActorWorld world = new ActorWorld(new BoundedGrid<Actor>(2,tamanio));
         //world.show();
     }
     
-    public static void solicitarPaso (MaquinaTuring m){
+    public static void requestStep (TuringMachine m){
 
         Scanner in = new Scanner (System.in);
         while (true)
-        	m.paso(in.nextInt());
+        	m.step(in.nextInt());
     }
 }

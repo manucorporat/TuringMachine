@@ -5,83 +5,87 @@ import java.io.File;
 
 
 
-class Transicion
+class Rule
 {
-	public int valorMaquina; // q
-	public int valorCinta; // e
+	public int machineState; // q
+	public int tapeSymbol; // e
 	
-	public int nuevoValorMaquina; // p
-	public int nuevoValorCinta; // f
-	public int direccion; // m
+	public int newState; // p
+	public int newSymbol; // f
+	public int direction; // m
 	
-	Transicion()
+	Rule()
 	{
-		valorMaquina = 0;
-		valorCinta = 0;
-		nuevoValorMaquina = 0;
-		nuevoValorCinta = 0;
-		direccion = 0;
+		this.machineState = 0;
+		this.tapeSymbol = 0;
+		this.newState = 0;
+		this.newSymbol = 0;
+		this.direction = 0;
 	}
 }
 
 
 class Parser
 {
-	public final static int charComodin = '*';
-	public final static int charFin = 'h';
-	public final static int charBlanco = 'b';
-
+	public final static int charANY = '*';
+	public final static int charEND = 'h';
+	public final static int charBLANK = 'b';
 
 	
-	public Transicion [] transiciones;
-	public int nuTransiciones;
+	protected Rule [] rules;
+	protected int nuRules;
 
 	
 	Parser(String filename)
 	{		
-		this.transiciones = new Transicion[200];
+		this.rules = new Rule[200];
 		for(int i = 0; i < 200; ++i)
-			this.transiciones[i] = new Transicion();
-		
-		this.nuTransiciones = 0;		
-		
+			this.rules[i] = new Rule();
+				
 		readFile(filename);
 	}
 	
 	
-	public boolean hayTransiciones()
+	public boolean hasRules()
 	{
-		return (this.nuTransiciones > 0);
+		return (this.nuRules > 0);
 	}
 	
 	
-	public boolean hayCinta()
+	public boolean hasTape()
 	{
 		return false;
 	}
 	
+	
+	public Rule[] getRules()
+	{
+		return rules;
+	}
+	
 
-	protected boolean readFile(String filename)
+	public boolean readFile(String filename)
 	{
 		System.out.println("Parsing \""+filename+"\"");
 
+		this.nuRules = 0;
 		try{
 			Scanner sc = new Scanner(new File(filename));
 
 			while (sc.hasNextLine()) {
 				
 				String strLine = sc.nextLine();
-				Transicion t = this.transiciones[this.nuTransiciones];
+				Rule t = this.rules[this.nuRules];
 				
 				try {
 					parseLine(strLine, t);
 					print(t);
 				} catch(Exception e) {
-					System.out.println("Error at line "+(this.nuTransiciones+1));
+					System.out.println("Error at line "+(this.nuRules+1));
 					// the exception is rethrown.
 					throw e;
 				}
-				++this.nuTransiciones;
+				++this.nuRules;
 			}
 			
 		}catch (Exception e){ //Catch exception if any
@@ -97,14 +101,14 @@ class Parser
 	{
 		char first = subZone.charAt(0);
 		switch(first) {
-		case charComodin:
-			return MaquinaTuring.valorComodin;
+		case charANY:
+			return TuringMachine.valueANY;
 			
-		case charFin:
-			return MaquinaTuring.valorFin;
+		case charEND:
+			return TuringMachine.valueEND;
 			
-		case charBlanco:
-			return MaquinaTuring.valorBlanco;
+		case charBLANK:
+			return TuringMachine.valueBLANK;
 			
 		default:
 			int r = Integer.parseInt(subZone);
@@ -116,30 +120,30 @@ class Parser
 	}
 	
 	
-	protected void parseLine(String line, Transicion t)
+	protected void parseLine(String line, Rule t)
 	{		
 		String[] zonas = line.split("\\s+");
 
 		if(zonas.length < 5)
-			throw new IllegalStateException("Missing 5-tuplas function.");
+			throw new IllegalStateException("Missing 5-tuplas rule.");
 		
 		
-		t.valorMaquina = parseZone(zonas[0], 0, 100000);
-		t.valorCinta = parseZone(zonas[1], 0, 1);
-		t.nuevoValorMaquina = parseZone(zonas[2], 0, 10000);
-		t.nuevoValorCinta = parseZone(zonas[3], 0, 6);
-		t.direccion = parseZone(zonas[4], -1, 1);		
+		t.machineState = parseZone(zonas[0], 0, 100000);
+		t.tapeSymbol = parseZone(zonas[1], 0, 1);
+		t.newState = parseZone(zonas[2], 0, 10000);
+		t.newSymbol = parseZone(zonas[3], 0, 6);
+		t.direction = parseZone(zonas[4], -1, 1);		
 	}
 	
 	
-	protected void print(Transicion t)
+	protected void print(Rule t)
 	{
 		System.out.printf("%3d %3d %3d %3d %3d \n",
-				t.valorMaquina,
-				t.valorCinta,
-				t.nuevoValorMaquina,
-				t.nuevoValorCinta,
-				t.direccion);
+				t.machineState,
+				t.tapeSymbol,
+				t.newState,
+				t.newSymbol,
+				t.direction);
 	}
 }
 
