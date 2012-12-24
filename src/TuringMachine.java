@@ -102,11 +102,12 @@ class TuringMachine
 				
 			}else
 			{
-				try {
-					Thread.sleep(100);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				if(sleep) {
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 				}
 				// updates gridworld and prints logs in console.
 				update();
