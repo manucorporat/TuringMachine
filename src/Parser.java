@@ -27,6 +27,7 @@ class Rule
 
 class Parser
 {
+	private final int maxRules = 200;
 	public final static int charANY = '*';
 	public final static int charEND = 'h';
 	public final static int charBLANK = 'b';
@@ -37,11 +38,9 @@ class Parser
 
 	
 	Parser(String filename)
-	{		
-		this.rules = new Rule[200];
-		for(int i = 0; i < 200; ++i)
-			this.rules[i] = new Rule();
-				
+	{
+		// allocate array of references
+		this.rules = new Rule[maxRules];
 		readFile(filename);
 	}
 	
@@ -60,22 +59,37 @@ class Parser
 	
 	public Rule[] getRules()
 	{
-		return rules;
+		return this.rules;
+	}
+	
+	
+	public int getNumberOfRules()
+	{
+		return this.nuRules;
 	}
 	
 
 	public boolean readFile(String filename)
 	{
 		System.out.println("Parsing \""+filename+"\"");
-
+		
 		this.nuRules = 0;
 		try{
 			Scanner sc = new Scanner(new File(filename));
-
+			
 			while (sc.hasNextLine()) {
 				
+				if(this.nuRules >= maxRules) {
+					// not enough memory
+					throw new OutOfMemoryError("Too many lines to parse.");
+				}
+				
+				// get line
 				String strLine = sc.nextLine();
-				Rule t = this.rules[this.nuRules];
+				
+				// allocate rule
+				Rule t = new Rule();
+				this.rules[this.nuRules] = t;
 				
 				try {
 					parseLine(strLine, t);

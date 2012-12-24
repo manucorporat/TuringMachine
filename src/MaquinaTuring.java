@@ -8,7 +8,8 @@ class TuringMachine
 	final static int valueBLANK = -2;
 
 	Rule[] rules;
-	int [] tape; 
+	int [] tape;
+	int nuRules;
 	int state; 
 	int position;
 	int size;
@@ -24,16 +25,20 @@ class TuringMachine
 		
         Parser p = new Parser (filename);
         if(p.hasRules())
-        	loadRules(p.getRules());
-        if(p.hasTape()) {
-        	//cargarCinta(p.cinta);
-        }   
+        	loadRules(p.getRules(), p.getNumberOfRules());
+        
+        //if(p.hasTape()) {
+        //	cargarCinta(p.cinta);
+        //}   
 	}
 	
 	
-	void loadRules (Rule [] t)
+	void loadRules (Rule [] t, int nuRules)
 	{
-		this.rules = t; 
+		assert(t.length >= nuRules);
+		
+		this.rules = t;
+		this.nuRules = nuRules;
 	}
 	
 	
@@ -52,7 +57,7 @@ class TuringMachine
 	
 	Rule findRule (int state, int symbol)
 	{
-		for (int i = 0; i < this.rules.length; ++i) {
+		for (int i = 0; i < this.nuRules; ++i) {
 			Rule t = this.rules[i];
 			if ((t.machineState==state || t.machineState==valueANY) &&
 				(t.tapeSymbol==symbol || t.tapeSymbol==valueANY))
