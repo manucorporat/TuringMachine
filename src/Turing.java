@@ -32,17 +32,17 @@ import java.util.Scanner;
 public class Turing
 {
     public static void main(String[] args)
-    {
-    	int tamanio = 600;
-        ActorWorld world = new ActorWorld(new BoundedGrid<Actor>(2,tamanio));
-        MaquinaTuring maquina= new MaquinaTuring(world,tamanio);
+    {    	
+    	final int tamanio = 40;
+        int cinta[] = {0,0, 0, 0};
+
+        MaquinaTuring maquina= new MaquinaTuring("increment", tamanio);
+        maquina.cargarCinta(cinta);
         
-        world.show();
-        
-        Parser p = new Parser ("programa.txt");
-        maquina.cargarTransiciones(p.transiciones);
-       
         solicitarPaso (maquina);
+        
+        //ActorWorld world = new ActorWorld(new BoundedGrid<Actor>(2,tamanio));
+        //world.show();
     }
     
     public static void solicitarPaso (MaquinaTuring m){
@@ -52,88 +52,3 @@ public class Turing
         	m.paso(in.nextInt());
     }
 }
-
-class MaquinaTuring {
-	ActorWorld world; 
-	Transicion[] transiciones;
-	int [] cinta; 
-	int estado; 
-	int posicion;
-	int tamanio;
-	Bug cabezal;
-	
-	MaquinaTuring (ActorWorld w, int t)
-	{
-		this.cinta = new int [t];
-		this.tamanio = t; 
-		this.world = w;
-		this.cabezal = new Bug();
-		world.add(this.cabezal);
-	}
-	
-	void cargarTransiciones (Transicion [] t)
-	{
-		this.transiciones = t; 
-	}
-	
-	boolean cargarCinta (int [] c)
-	{
-		if (this.tamanio < c.length)
-			return false;
-		
-		this.posicion = (this.tamanio-c.length)/2;
-		for (int i = 0;i < c.length; ++i)
-			this.cinta[i+this.posicion] = c[i];
-		
-		return true;
-	}
-		
-	Transicion buscarTransicion (int estado, int cinta)
-	{
-		for (int i=0; i<this.transiciones.length; ++i)
-		{
-			Transicion t = this.transiciones[i];
-			if (t.valorMaquina==estado && t.valorCinta==cinta)
-				return t;
-		}
-		return null; 
-	}
-	
-	/**
-	 * @param veces
-	 */
-	void paso (int veces)
-	{
-		for(int i = 0; i < veces; i++){
-			Transicion t = buscarTransicion (this.estado,this.cinta[this.posicion]);
-			if (t==null)
-				fin ();
-			else 
-			{
-			this.estado = t.nuevoValorMaquina;
-			this.cinta [this.posicion] = t.nuevoValorCinta;
-			if (t.direccion == -1) 
-				this.posicion --;
-			else 
-				this.posicion ++;
-			}
-			actualizar();
-		}
-	}
-	
-	void fin ()
-	{
-		System.out.println("FIN");
-		
-		for(int i = 0; i<this.tamanio; ++i)
-			System.out.print(this.cinta[i]+ " ");
-		System.out.println();
-	}
-	
-	void actualizar ()
-	{
-		this.cabezal.moveTo(new Location(0, this.posicion));
-		
-	}
-}
-
