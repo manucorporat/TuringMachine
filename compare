@@ -1,0 +1,25 @@
+// Creado por Manuel Martinez-Almeida
+// Guardar la cifra a comprobar en el estado de la maquina.
+0 0 2 _ 1
+0 1 3 _ 1
+
+// Ignorar hasta el primer simbolo en blanco, el estado es propagado.
+2 _ 4 * 1
+3 _ 5 * 1
+2 * * * 1
+3 * * * 1
+
+// Comparar el estado propagado con el simbolo actual.
+4 0 6 _ -1
+4 1 h * -1
+4 _ * * 1
+5 0 h * -1
+5 1 6 _ -1
+5 _ * * 1
+
+// Volver al principio para comprobar la siguiente cifra
+6 0 7 * -1
+6 1 7 * -1
+6 _ * * -1
+7 _ 0 * 1
+7 * * * -1
