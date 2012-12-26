@@ -128,33 +128,36 @@ class Parser
 			
 			while (sc.hasNextLine()) {
 				
-				if(this.nuRules >= maxRules) {
-					// not enough memory
-					throw new OutOfMemoryError("Too many lines to parse.");
-				}
-				
 				// get line
 				String strLine = sc.nextLine();
 				
-				// allocate rule
-				Rule t = new Rule();
-				this.rules[this.nuRules] = t;
-				
-				try {
-					parseLine(strLine, t);
-					print(t);
-				} catch(Exception e) {
-					System.out.println("Error at line "+(this.nuRules+1));
-					throw e;
+				// ignoring comments
+				if(strLine.length() > 0 && strLine.charAt(0) != '/') {
+					
+					// not enough memory, the array is too short.
+					if(this.nuRules >= maxRules)
+						throw new OutOfMemoryError("Too many lines to parse.");
+					
+					// allocate rule
+					Rule t = new Rule();
+					this.rules[this.nuRules] = t;
+					
+					// try to parse line
+					try {
+						parseLine(strLine, t);
+						print(t);
+					} catch(Exception e) {
+						System.out.println("Error at line "+(this.nuRules+1));
+						throw e;
+					}
+					++this.nuRules;
 				}
-				++this.nuRules;
 			}
 			
-		} catch (Exception e){
+		} catch (Exception e) {
 			System.err.println("Error: " + e.getMessage());
 			return false;
 		}
-		
 		return true;
 	}
 	
