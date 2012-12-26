@@ -19,6 +19,55 @@ class Rule
 		this.newSymbol = 0;
 		this.direction = 0;
 	}
+	
+	public void print()
+	{
+		System.out.printf("%3d %3d %3d %3d %3d \n",
+				this.machineState,
+				this.tapeSymbol,
+				this.newState,
+				this.newSymbol,
+				this.direction);
+	}
+	
+	public void explain()
+	{
+		if(this.machineState == TuringMachine.valueANY)
+			System.out.print("Con cualquier estado");
+		else {
+			System.out.print("Con estado ");
+			TuringMachine.printValue(this.machineState);
+		}
+		if(this.tapeSymbol == TuringMachine.valueANY)
+			System.out.print(" y cualquier simbolo");
+		else {
+			System.out.print(" y simbolo ");
+			TuringMachine.printValue(this.tapeSymbol);
+		}
+		
+		if(this.newState != TuringMachine.valueANY) {
+			System.out.print(", cambiamos el estado a ");
+			TuringMachine.printValue(this.newState);
+		}
+		
+		
+		if(this.newSymbol != TuringMachine.valueANY) {
+			if(this.newState != TuringMachine.valueANY)
+				System.out.print(" y el simbolo por ");
+			else
+				System.out.print(", cambiamos el simbolo por ");
+
+			TuringMachine.printValue(this.newSymbol);
+		}
+
+
+		if(this.direction == -1)
+			System.out.print(". Nos movemos a la izquierda.");
+		else if(this.direction == 1)
+			System.out.print(". Nos movemos a la derecha.");
+		
+		System.out.println();		
+	}
 }
 
 class Parser
