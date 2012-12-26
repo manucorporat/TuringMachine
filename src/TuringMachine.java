@@ -77,13 +77,18 @@ class TuringMachine
 	Rule findRule (int state, int symbol)
 	{
 		// sequential search, matching state and symbol.
+		Rule f = null;
 		for (int i = 0; i < this.nuRules; ++i) {
 			Rule t = this.rules[i];
-			if ((t.machineState==state || t.machineState==valueANY) &&
-				(t.tapeSymbol==symbol || t.tapeSymbol==valueANY))
+						
+			if(t.machineState==state && t.tapeSymbol==symbol)
 				return t;
+			
+			else if ((t.machineState==state || t.machineState==valueANY) &&
+				(t.tapeSymbol==symbol || t.tapeSymbol==valueANY))
+				f = t;
 		}
-		return null; 
+		return f; 
 	}
 	
 	
