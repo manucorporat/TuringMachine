@@ -14,48 +14,43 @@
  * @author Cay Horstmann
  */
 
-import info.gridworld.actor.ActorWorld;
-import info.gridworld.actor.Bug;
-import info.gridworld.actor.Rock;
-import info.gridworld.grid.BoundedGrid;
-import info.gridworld.grid.Location;
-import info.gridworld.actor.Actor;
 import java.util.Scanner;
-/**
- * This class runs a world that contains a bug and a rock, added at random
- * locations. Click on empty locations to add additional actors. Click on
- * populated locations to invoke methods on their occupants. <br />
- * To build your own worlds, define your own actors and a runner class. See the
- * BoxBugRunner (in the boxBug folder) for an example. <br />
- * This class is not tested on the AP CS A and AB exams.
- */
+
+
 public class Turing
 {
-    public static void main(String[] args)
-    {    	
-    	final int size = 50;
-        //int tape[] = {TuringMachine.valueBLANK};
-        int tape[] = {1,1,0,1,1,0,0,0, TuringMachine.valueBLANK ,1,1,1,1,0,1,0,1,1};
-
-
-        TuringMachine machine= new TuringMachine("adding", size);
+    public static void main (String[] args)
+    {   
+        Scanner in = new Scanner (System.in);
+        System.out.print("Introduce el programa: ");
+        
+        // PARSE FILENAME
+        String filename = in.nextLine();
+        TuringMachine machine = new TuringMachine(filename, 50);
+        
+        // PARSE TAPE
+        System.out.print("Introduce la cinta: ");
+        String cinta = in.nextLine();
+		String[] numbers = cinta.split("\\s+");
+		int [] tape = new int[numbers.length];
+		for(int i = 0; i < numbers.length; ++i)
+			tape[i] = Integer.parseInt(numbers[i]);
+		
+        System.out.println();
         machine.loadTape(tape);
         
-        requestStep (machine);
         
-        //ActorWorld world = new ActorWorld(new BoundedGrid<Actor>(2,tamanio));
-        //world.show();
+        requestStep (machine);
     }
+    
     
     public static void requestStep (TuringMachine m){
 
         Scanner in = new Scanner (System.in);
         while (true) {
-        	int t = in.nextInt();
-        	if(t >= 0)
-            	m.step(t, false);
-        	else
-            	m.step(-t, true);
+        	int c = in.nextInt();
+        	int steps = m.step(c);
+        	System.out.println(steps+" steps.");
         }
     }
 }
