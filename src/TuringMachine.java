@@ -1,57 +1,68 @@
 
 class TuringMachine
 {
-	final static int valueBLANK = -2;
-	final static int valueANY = -3;
-	final static int valueEND = -4;
+	public final static int valueBLANK = -2;
+	public final static int valueANY = -3;
+	public final static int valueEND = -4;
 	
-	final static int valueA = -5;
-	final static int valueB = -6;
-	final static int valueC = -7;
-	final static int valueX = -8;
-	final static int valueY = -9;
+	public final static int valueA = -5;
+	public final static int valueB = -6;
+	public final static int valueC = -7;
+	public final static int valueX = -8;
+	public final static int valueY = -9;
 
 
-	Rule[] rules;
-	int [] tape;
-	int nuRules;
-	int state; 
-	int position;
-	int size;
+	protected Rule[] rules;
+	protected int [] tape;
+	protected int nuRules;
+	protected int state; 
+	protected int position;
+	protected int size;
 	
 	TuringMachine (String filename, int t)
 	{
 		assert(t > 0);
-
-		help();
 		
-		// Allocate tape
+		// allocate tape
 		this.tape = new int [t];
 		this.size = t;
+		this.position = this.size/2;
 		
-		// Reset machine
+		// reset machine
 		reset();
 		
-		// Load and parse program.
+		// load and parse program.
         Parser p = new Parser (filename);
         if(p.hasRules())
         	loadRules(p.getRules(), p.getNumberOfRules());
 	}
 	
 	
-	void reset()
+	public int[] getTape()
 	{
-		// Reset tape, blank state is in all fields.
+		return this.tape;
+	}
+	
+	
+	public int getPosition()
+	{
+		return this.position;
+	}
+	
+	
+	public void reset()
+	{
+		// reset tape, blank state is in all fields.
 		this.tape = new int [this.size];
 		for(int i = 0; i < this.size; ++i)
 			this.tape[i] = valueBLANK;
 		
-		// Reset machine's state.
+		// reset machine's state.
 		this.state = 0;
 	}
 	
 	
-	void loadRules (Rule [] t, int nuRules)
+	public void loadRules (Rule [] t, int nuRules)
 	{
 		assert(nuRules > 0);
 		assert(t.length >= nuRules);
@@ -61,7 +72,7 @@ class TuringMachine
 	}
 	
 	
-	boolean loadTape (int [] c)
+	public boolean loadTape (int [] c)
 	{
 		if (this.size < c.length)
 			return false;
@@ -74,7 +85,7 @@ class TuringMachine
 	}
 	
 	
-	Rule findRule (int state, int symbol)
+	protected Rule findRule (int state, int symbol)
 	{
 		// sequential search, matching state and symbol.
 		Rule f = null;
@@ -92,7 +103,7 @@ class TuringMachine
 	}
 	
 	
-	void step (int times, boolean sleep)
+	public int step (int times)
 	{	
 		int i = 0;
 		while(i < times)
@@ -102,20 +113,20 @@ class TuringMachine
 			
 			// if the rule was not found, then we stop the machine.
 			if(t == null ) {
-				end();
-				i = times; // break; (but we can not use break;)
+				end("Not rule was found. Aborted.");
+				times = i; // break; (but we can not use break;)
 				
 			}else
 			{
-				if(sleep) {
-					try {
-						Thread.sleep(100);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
+				/*
+				try {
+					Thread.sleep(10);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
-				// updates gridworld and prints logs in console.
-				update();
+				*/
+				
+				printMachine();
 
 				// update symbol
 				if(t.newSymbol != valueANY)
@@ -129,18 +140,18 @@ class TuringMachine
 					this.position++;
 				
 				
+				// check if the machine is out of memory
 				if(this.position < 0 || this.position >= this.size) {
-					System.out.println("Not enought memory, turing machine aborted.");
 					this.position = 0;
-					end();
-					i = times; // break; (but we can not use break;)
+					end("Tape overflow, turing machine aborted.");
+					times = i; // break; (but we can not use break;)
 					
 				}else
 				{
 					// update machine's state
 					if(t.newState == valueEND) {
-						end();
-						i = times; // break; (but we can not use break;)
+						end("End symbol found. Stopped succesfully.");
+						times = i; // break; (but we can not use break;)
 						
 					}else if(t.newState != valueANY)
 						this.state = t.newState;
@@ -148,19 +159,21 @@ class TuringMachine
 			}
 			++i;
 		}
+		return i;
 	}
 	
 	
-	void end ()
+	protected void end(String message)
 	{
+		printMachine();
+
 		// At the end, we reset the machine's state to 0.
 		this.state = 0;
-		update ();
-		System.out.println("END");
+		System.out.println("E: 0 -> END: \""+message+"\"");
 	}
 	
 	
-	void update ()
+	private void printMachine()
 	{
 		System.out.printf("E:%2d",this.state);
 
@@ -200,9 +213,11 @@ class TuringMachine
 		}
 	}
 	
-	void help()
+	
+	public void help()
 	{
 		System.out.println("***** HELP *****");
+		System.out.println("Syntax: <current state> <current symbol> <new state> <new symbol> <direction>");
 		System.out.printf("%d: Blank value.\n", valueBLANK);
 		System.out.printf("%d: It's a wildcard: it matches any symbol/state.\n", valueANY);
 		System.out.printf("%d: End value.\n", valueEND);

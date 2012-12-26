@@ -166,21 +166,15 @@ class Parser
 	{
 		char first = subZone.charAt(0);
 		switch(first) {
-		case charA:
-			return TuringMachine.valueA;
-			
-		case charB:
-			return TuringMachine.valueB;
-			
-		case charC:
-			return TuringMachine.valueC;
-				
-		case charX:
-			return TuringMachine.valueX;
-			
-		case charY:
-			return TuringMachine.valueY;
-			
+		
+		// ALIAS
+		case charA: return TuringMachine.valueA;
+		case charB: return TuringMachine.valueB;
+		case charC: return TuringMachine.valueC;		
+		case charX: return TuringMachine.valueX;
+		case charY: return TuringMachine.valueY;
+		
+		// SPEACIL CHARCHTS
 		case charANY:
 			return TuringMachine.valueANY;
 			
@@ -190,6 +184,7 @@ class Parser
 		case charBLANK:
 			return TuringMachine.valueBLANK;
 			
+		//NUMBER
 		default:
 			int r = Integer.parseInt(subZone);
 			if(r < min || r > max)
@@ -201,37 +196,26 @@ class Parser
 	
 	
 	protected void parseLine(String line, Rule t)
-	{		
-		String[] zonas = line.split("\\s+");
-
-		if(zonas.length < 5)
+	{
+		// Split the line using a regular expresion.
+		String[] zones = line.split("\\s+");
+		
+		// We need 5 "arguments".
+		if(zones.length < 5)
 			throw new IllegalStateException("Missing 5-tuplas rule.");
 		
-		//*
-		t.machineState	= parseZone(zonas[0], 0, 100000);
-		t.tapeSymbol	= parseZone(zonas[1], 0, 1);
-		t.newState		= parseZone(zonas[2], 0, 10000);
-		t.newSymbol		= parseZone(zonas[3], 0, 6);
-		t.direction		= parseZone(zonas[4], -1, 1);
-		//*/
-		/*
-		t.machineState	= parseZone(zonas[0], 0, 100000);
-		t.tapeSymbol	= parseZone(zonas[1], 0, 100000);
-		t.newState		= parseZone(zonas[4], 0, 100000);
-		t.newSymbol		= parseZone(zonas[2], 0, 100000);
-		t.direction		= parseZone(zonas[3], -1, 1);
-		//*/
+		t.machineState	= parseZone(zones[0], 0, 10000);
+		t.tapeSymbol	= parseZone(zones[1], 0, 10000);
+		t.newState		= parseZone(zones[2], 0, 10000);
+		t.newSymbol		= parseZone(zones[3], 0, 10000);
+		t.direction		= parseZone(zones[4], -1, 1);
 	}
 
 	
 	public void print(Rule t)
 	{
-		System.out.printf("%3d %3d %3d %3d %3d \n",
-				t.machineState,
-				t.tapeSymbol,
-				t.newState,
-				t.newSymbol,
-				t.direction);
+		t.print();
+		//t.explain();
 	}
 }
 
