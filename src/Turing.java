@@ -22,7 +22,7 @@ public class Turing
     public static void main (String[] args)
     {   
         Scanner in = new Scanner (System.in);
-        System.out.print("Introduce el programa: ");
+        System.out.print("Introduce el programa:: ");
         
         // PARSE FILENAME
         String filename = in.nextLine();
