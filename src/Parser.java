@@ -214,8 +214,8 @@ class Parser
 	
 	public void print(Rule t)
 	{
-		t.print();
-		//t.explain();
+		//t.print();
+		t.explain();
 	}
 }
 
