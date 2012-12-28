@@ -35,12 +35,16 @@ public class Turing
 		int [] tape = new int[numbers.length];
 		for(int i = 0; i < numbers.length; ++i)
 			tape[i] = Integer.parseInt(numbers[i]);
-		
-        System.out.println();
+
         machine.loadTape(tape);
-        
-        
         requestStep (machine);
+    	
+    	
+    	
+    	//TuringMachine machine = new TuringMachine("toDecimal", 50);
+        //int [] tape = {1,1,1,1,0,1,0,0,0,0,1,0,0,1,0,0,0,0,0,0};
+        //machine.loadTape(tape);
+        //machine.run();
     }
     
     
@@ -49,8 +53,7 @@ public class Turing
         Scanner in = new Scanner (System.in);
         while (true) {
         	int c = in.nextInt();
-        	int steps = m.step(c);
-        	System.out.println(steps+" steps.");
+        	m.step(c);
         }
     }
 }

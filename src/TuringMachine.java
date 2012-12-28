@@ -19,7 +19,8 @@ class TuringMachine
 	protected int position;
 	protected int size;
 	
-	TuringMachine (String filename, int t)
+	
+	TuringMachine (int t)
 	{
 		assert(t > 0);
 		
@@ -30,7 +31,13 @@ class TuringMachine
 		
 		// reset machine
 		reset();
-		
+	}
+	
+	
+	TuringMachine (String filename, int t)
+	{
+		this(t);
+
 		// load and parse program.
         Parser p = new Parser (filename);
         if(p.hasRules())
@@ -91,41 +98,43 @@ class TuringMachine
 		Rule f = null;
 		for (int i = 0; i < this.nuRules; ++i) {
 			Rule t = this.rules[i];
-						
-			if(t.machineState==state && t.tapeSymbol==symbol)
+			
+			boolean A = t.machineState==state;
+			boolean B = t.tapeSymbol==symbol;
+
+			if(A && B)
 				return t;
 			
-			else if ((t.machineState==state || t.machineState==valueANY) &&
-				(t.tapeSymbol==symbol || t.tapeSymbol==valueANY))
+			else if ((B || t.tapeSymbol==valueANY) &&
+					(A || t.machineState==valueANY))
 				f = t;
 		}
 		return f; 
+	}
+		
+	
+	public int run () {
+		return step(Integer.MAX_VALUE);
 	}
 	
 	
 	public int step (int times)
 	{	
 		int i = 0;
+		Rule t = null;
+		
 		while(i < times)
 		{
 			// Find rule for current state and current symbol.
-			Rule t = findRule(this.state, this.tape[this.position]);
+			t = findRule(this.state, this.tape[this.position]);
 			
 			// if the rule was not found, then we stop the machine.
 			if(t == null ) {
-				end("Not rule was found. Aborted.");
+				end("Not rule was found. turing machine aborted.");
 				times = i; // break; (but we can not use break;)
 				
 			}else
 			{
-				/*
-				try {
-					Thread.sleep(10);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				*/
-				
 				printMachine();
 
 				// update symbol
@@ -135,27 +144,27 @@ class TuringMachine
 				
 				// update machine's position
 				if (t.direction == -1) 
-					this.position--;
+					--this.position;
 				else if(t.direction == 1)
-					this.position++;
+					++this.position;
+				
 				
 				
 				// check if the machine is out of memory
 				if(this.position < 0 || this.position >= this.size) {
+					
 					this.position = 0;
 					end("Tape overflow, turing machine aborted.");
 					times = i; // break; (but we can not use break;)
 					
-				}else
-				{
-					// update machine's state
-					if(t.newState == valueEND) {
-						end("End symbol found. Stopped succesfully.");
-						times = i; // break; (but we can not use break;)
-						
-					}else if(t.newState != valueANY)
+				// check if new status is END value.
+				}else if(t.newState == valueEND) {
+					
+					end("End symbol found. Stopped succesfully. "+i+" steps.");
+					times = i; // break; (but we can not use break;)
+					
+				}else if(t.newState != valueANY)
 						this.state = t.newState;
-				}
 			}
 			++i;
 		}
@@ -173,7 +182,7 @@ class TuringMachine
 	}
 	
 	
-	private void printMachine()
+	public void printMachine()
 	{
 		System.out.printf("E:%2d",this.state);
 
