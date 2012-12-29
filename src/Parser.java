@@ -11,6 +11,9 @@ class Rule
 	public int newSymbol; // f
 	public int direction; // m
 	
+	/**
+	 * Inicializa un objeto de tipo Rule, con los valores predefinidos.
+	 */
 	Rule()
 	{
 		this.machineState = 0;
@@ -20,6 +23,11 @@ class Rule
 		this.direction = 0;
 	}
 	
+	
+	/**
+	 * Imprime en consola, los valores de la regla (Rule).
+	 * <estado actual> <simbolo> <nuevo estado> <nuevo simbolo> <direccion>
+	 */
 	public void print()
 	{
 		System.out.printf("%3d %3d %3d %3d %3d \n",
@@ -30,6 +38,10 @@ class Rule
 				this.direction);
 	}
 	
+	
+	/**
+	 * Imprime una explicaci—n es lenguaje natural de la regla.
+	 */
 	public void explain()
 	{
 		if(this.machineState == TuringMachine.valueANY)
@@ -70,6 +82,7 @@ class Rule
 	}
 }
 
+
 class Parser
 {
 	private final int maxRules = 200;
@@ -86,6 +99,10 @@ class Parser
 	protected int nuRules;
 
 	
+	/**
+	 * Inicializa un objeto de tipo parser.
+	 * @param filename el programa a parsear.
+	 */
 	Parser(String filename)
 	{
 		// allocate array of references
@@ -94,30 +111,38 @@ class Parser
 	}
 	
 	
+	/**
+	 * Retorna true si el programa contenia alguna regla valida.
+	 */
 	public boolean hasRules()
 	{
 		return (this.nuRules > 0);
 	}
+
 	
-	
-	public boolean hasTape()
-	{
-		return false;
-	}
-	
-	
+	/**
+	 * Retorna un array con todas la reglas parseadas.
+	 */
 	public Rule[] getRules()
 	{
 		return this.rules;
 	}
 	
 	
+	/**
+	 * Retorna el numero de reglas parseadas.
+	 */
 	public int getNumberOfRules()
 	{
 		return this.nuRules;
 	}
 	
 
+	/**
+	 * Parsea el archivo especificado.
+	 * @param filename url del archivo a ser parseado.
+	 * @return true si el parseado se completo 
+	 */
 	public boolean readFile(String filename)
 	{
 		System.out.println("Parsing \""+filename+"\"");
@@ -162,6 +187,13 @@ class Parser
 	}
 	
 	
+	/**
+	 * Parsea un cada parte de la linea.
+	 * Retorna un int.
+	 * @param subzone texto a ser parseado.
+	 * @param min minimo valor del int para validacion.
+	 * @param max maximo valor del int para validacion.
+	 */
 	protected int parseZone(String subZone, int min, int max)
 	{
 		char first = subZone.charAt(0);
@@ -195,6 +227,11 @@ class Parser
 	}
 	
 	
+	/**
+	 * Parsea un linea.
+	 * @param line, linea a parsear.
+	 * @param t, referencia a la regla a rellenar.
+	 */
 	protected void parseLine(String line, Rule t)
 	{
 		// Split the line using a regular expresion.
@@ -212,6 +249,9 @@ class Parser
 	}
 
 	
+	/**
+	 * Usado para imprimir informacion mientras un programa es parseado.
+	 */
 	public void print(Rule t)
 	{
 		//t.print();
