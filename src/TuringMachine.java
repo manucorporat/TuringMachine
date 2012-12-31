@@ -1,6 +1,7 @@
 
 class TuringMachine
 {
+	public final static int valueSTART = 0;
 	public final static int valueBLANK = -2;
 	public final static int valueANY = -3;
 	public final static int valueEND = -4;
@@ -27,7 +28,6 @@ class TuringMachine
 		// allocate tape
 		this.tape = new int [t];
 		this.size = t;
-		this.position = this.size/2;
 		
 		// reset machine
 		reset();
@@ -65,7 +65,8 @@ class TuringMachine
 			this.tape[i] = valueBLANK;
 		
 		// reset machine's state.
-		this.state = 0;
+		this.state = valueSTART;
+		this.position = this.size/2;
 	}
 	
 	
@@ -177,7 +178,7 @@ class TuringMachine
 		printMachine();
 
 		// At the end, we reset the machine's state to 0.
-		this.state = 0;
+		this.state = valueSTART;
 		System.out.println("E: 0 -> END: \""+message+"\"");
 	}
 	
