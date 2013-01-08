@@ -23,13 +23,13 @@ public class Turing
 	public static Parser getProgramFrom(Scanner in)
 	{
 		Parser parse;
-        boolean b;
+        boolean isOk;
         do {
             System.out.print("Introduce el programa: ");
             String filename = in.nextLine();
             parse = new Parser();
-            b = parse.readFile(filename);
-        } while( !b );
+            isOk = parse.readFile(filename);
+        } while( !isOk );
         
         return parse;
 	}
@@ -38,24 +38,24 @@ public class Turing
 	public static int[] getTapeFrom(Scanner in)
 	{
         int [] tape;
-        boolean b;
+        boolean isOk = true;
 
         do {
-        	b = true;
             System.out.print("Introduce la cinta: ");
             String cinta = in.nextLine();
     		String[] numbers = cinta.split("\\s+");
     		tape = new int[numbers.length];
     		
     		try {
+            	isOk = true;
         		for(int i = 0; i < numbers.length; ++i)
-        			tape[i] = Integer.parseInt(numbers[i]);
+        			tape[i] = Parser.parseZone(numbers[i], -10, 9);
         		
     		} catch(Exception e) {
-    			System.out.println("Tape bad format.");
-    			b = false;
+    			System.out.println("Error parsing tape: " + e.getMessage());
+    			isOk = false;
     		}
-        } while( !b );
+        } while( !isOk );
         
         return tape;
 	}

@@ -148,13 +148,11 @@ class Parser
 	 * @return true si el parseado se completo 
 	 */
 	public boolean readFile(String filename)
-	{
-		System.out.println("Parsing \""+filename+"\"");
-		
+	{		
 		this.nuRules = 0;
 		try {
 			Scanner sc = new Scanner(new File(filename));
-			
+			System.out.println("Parsing \""+filename+"\"");
 			while (sc.hasNextLine()) {
 				
 				// get line
@@ -176,7 +174,7 @@ class Parser
 						parseLine(strLine, t);
 						print(t);
 					} catch(Exception e) {
-						System.out.println("Error at line "+(this.nuRules+1));
+						System.out.println("Error at line "+(this.nuRules+1)+".");
 						throw e;
 					}
 					++this.nuRules;
@@ -184,7 +182,7 @@ class Parser
 			}
 			
 		} catch (Exception e) {
-			System.err.println("Error: " + e.getMessage());
+			System.out.println("Error: " + e.getMessage());
 			return false;
 		}
 		return true;
@@ -198,7 +196,7 @@ class Parser
 	 * @param min minimo valor del int para validacion.
 	 * @param max maximo valor del int para validacion.
 	 */
-	protected int parseZone(String subZone, int min, int max)
+	public static int parseZone(String subZone, int min, int max)
 	{
 		char first = subZone.charAt(0);
 		switch(first) {
