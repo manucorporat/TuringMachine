@@ -61,6 +61,12 @@ class TuringMachine
 	}
 	
 	
+	public int getState()
+	{
+		return this.state;
+	}
+	
+	
 	public void reset()
 	{
 		// reset tape, blank state is in all fields.
