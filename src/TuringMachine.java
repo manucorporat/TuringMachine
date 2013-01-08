@@ -9,8 +9,9 @@ class TuringMachine
 	public final static int valueA = -5;
 	public final static int valueB = -6;
 	public final static int valueC = -7;
-	public final static int valueX = -8;
-	public final static int valueY = -9;
+	public final static int valueD = -8;
+	public final static int valueX = -9;
+	public final static int valueY = -10;
 
 
 	protected Rule[] rules;
@@ -218,6 +219,8 @@ class TuringMachine
 			System.out.print(Parser.charB); break;
 		case valueC:
 			System.out.print(Parser.charC); break;
+		case valueD:
+			System.out.print(Parser.charD); break;
 		case valueX:
 			System.out.print(Parser.charX); break;
 		case valueY:

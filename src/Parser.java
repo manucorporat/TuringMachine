@@ -89,6 +89,7 @@ class Parser
 	public final static char charA = 'a';
 	public final static char charB = 'b';
 	public final static char charC = 'c';
+	public final static char charD = 'd';
 	public final static char charX = 'x';
 	public final static char charY = 'y';
 	public final static char charANY = '*';
@@ -204,7 +205,8 @@ class Parser
 		// ALIAS
 		case charA: return TuringMachine.valueA;
 		case charB: return TuringMachine.valueB;
-		case charC: return TuringMachine.valueC;		
+		case charC: return TuringMachine.valueC;
+		case charD: return TuringMachine.valueD;
 		case charX: return TuringMachine.valueX;
 		case charY: return TuringMachine.valueY;
 		
