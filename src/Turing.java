@@ -49,7 +49,7 @@ public class Turing
     		try {
             	isOk = true;
         		for(int i = 0; i < numbers.length; ++i)
-        			tape[i] = Parser.parseZone(numbers[i], -10, 9);
+        			tape[i] = Parser.parseZone(numbers[i], 0, 9, false);
         		
     		} catch(Exception e) {
     			System.out.println("Error parsing tape: " + e.getMessage());
@@ -72,13 +72,16 @@ public class Turing
         // GET TAPE AND VALIDATE
         int [] tape = getTapeFrom(in);
         
+        
         // CREATE MACHINE FROM PARSER
         TuringMachine machine = new TuringMachine(parse, 50);
         
         // LOAD TAPE
         machine.loadTape(tape);
         
+        
         // CREATE GRIDWORLD INTERFACE
+        // this connects the TuringMachine with Gridworld
         GridManager manager = new GridManager(machine);
         
         // MAKE WORLD VISIBLE
