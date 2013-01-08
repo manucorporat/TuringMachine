@@ -11,14 +11,17 @@ class GridManager {
 	
 	public TuringMachine machine;
 	public ActorWorld world;
+	public Lector reader;
 	
 	GridManager(TuringMachine machine)
-	{
-		this.machine = machine;
-		
+	{		
 		BoundedGrid<Actor> grid = new BoundedGrid<Actor>(2, machine.size);
+		this.machine = machine;
 		this.world = new ActorWorld(grid);
-		this.world.add(new Lector(this));
+		this.reader = new Lector(this);
+		this.world.add(this.reader);
+		
+		updateItems();
 	}
 	
 	
@@ -42,8 +45,14 @@ class GridManager {
 	}
 	
 	
-	public void updateTape()
+	public void updateItems()
 	{
+		// UPDATE READER
+		this.reader.moveTo(new Location(1, this.machine.getPosition()));
+		configActor(this.reader, this.machine.getState());
+		
+		
+		// UPDATE TAPE
 		int [] tape = this.machine.getTape();
 		for(int i = 0; i < this.machine.size; ++i)
 		{
@@ -80,8 +89,7 @@ class Lector extends Bug
 	public void act()
 	{
 		this.manager.machine.step(1);
-		this.moveTo(new Location(1, this.manager.machine.getPosition()));
-		this.manager.updateTape();
+		this.manager.updateItems();
 	}
 }
 

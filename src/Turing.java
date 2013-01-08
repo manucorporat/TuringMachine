@@ -60,6 +60,7 @@ public class Turing
         return tape;
 	}
 	
+	
     public static void main (String[] args)
     {   
     	// CREATE SCANNER
