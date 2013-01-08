@@ -186,6 +186,7 @@ class Parser
 			System.out.println("Error: " + e.getMessage());
 			return false;
 		}
+		System.out.println(this.nuRules+" rules parsed succesfully.");
 		return true;
 	}
 	
