@@ -1,10 +1,7 @@
 
 import java.awt.Color;
-import java.util.ArrayList;
-
 import info.gridworld.actor.*;
 import info.gridworld.grid.BoundedGrid;
-import info.gridworld.grid.Grid;
 import info.gridworld.grid.Location;
 
 class GridManager {
@@ -12,14 +9,23 @@ class GridManager {
 	public TuringMachine machine;
 	public ActorWorld world;
 	public Lector reader;
+	public long stoptime;
+	public long timestamp;
+	boolean waiting;
 	
-	GridManager(TuringMachine machine)
+	GridManager(TuringMachine machine, long stopTime)
 	{		
 		BoundedGrid<Actor> grid = new BoundedGrid<Actor>(2, machine.size);
 		this.machine = machine;
 		this.world = new ActorWorld(grid);
 		this.reader = new Lector(this);
 		this.world.add(this.reader);
+		if(stopTime < 0)
+			this.stoptime = Long.MAX_VALUE;
+		else
+			this.stoptime = stopTime;
+		
+		this.waiting = false;
 		
 		updateItems();
 	}
@@ -67,6 +73,11 @@ class GridManager {
 			}else
 				this.world.remove(loc);
 		}
+		
+		if(this.machine.inHaltState) {
+			this.waiting = true;
+			this.timestamp = System.currentTimeMillis();
+		}
 	}
 	
 	
@@ -88,8 +99,13 @@ class Lector extends Bug
 
 	public void act()
 	{
-		this.manager.machine.step(1);
-		this.manager.updateItems();
+		if((System.currentTimeMillis()-manager.timestamp) >= manager.stoptime)
+			manager.waiting = false;
+
+		if(!manager.waiting) {
+			this.manager.machine.step(1);
+			this.manager.updateItems();
+		}
 	}
 }
 

@@ -82,7 +82,7 @@ public class Turing
         
         // CREATE GRIDWORLD INTERFACE
         // this connects the TuringMachine with Gridworld
-        GridManager manager = new GridManager(machine);
+        GridManager manager = new GridManager(machine, 6000);
         
         // MAKE WORLD VISIBLE
     	manager.show();
