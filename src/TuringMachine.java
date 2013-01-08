@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 class TuringMachine
 {
-	public final static int valueSTART = 1;
+	public final static int valueSTART = 0;
 	public final static int valueBLANK = -2;
 	public final static int valueANY = -3;
 	public final static int valueEND = -4;
