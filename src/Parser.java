@@ -256,11 +256,17 @@ class Parser
 		if(zones.length < 5)
 			throw new IllegalStateException("Missing 5-tuplas rule.");
 		
-		t.machineState	= parseZone(zones[0], 0, 10000);
-		t.tapeSymbol	= parseZone(zones[1], 0, 10000);
-		t.newState		= parseZone(zones[2], 0, 10000);
-		t.newSymbol		= parseZone(zones[3], 0, 10000);
-		t.direction		= parseZone(zones[4], -1, 1);
+//		t.machineState	= parseZone(zones[0], 0, 10000, true);
+//		t.tapeSymbol	= parseZone(zones[1], 0, 10000, false);
+//		t.newState		= parseZone(zones[2], 0, 10000, true);
+//		t.newSymbol		= parseZone(zones[3], 0, 10000, false);
+//		t.direction		= parseZone(zones[4], -1, 1, false);
+
+		t.machineState	= parseZone(zones[0], 0, 10000, true);
+		t.tapeSymbol	= parseZone(zones[1], 0, 10000, false);
+		t.newState		= parseZone(zones[4], 0, 10000, true);
+		t.newSymbol		= parseZone(zones[2], 0, 10000, false);
+		t.direction		= parseZone(zones[3], -1, 1, false);
 	}
 
 	

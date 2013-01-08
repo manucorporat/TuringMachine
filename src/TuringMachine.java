@@ -1,4 +1,3 @@
-import java.util.Scanner;
 
 class TuringMachine
 {
@@ -21,6 +20,7 @@ class TuringMachine
 	protected int state; 
 	protected int position;
 	protected int size;
+	public boolean inHaltState;
 	
 	
 	TuringMachine (int t)
@@ -77,6 +77,7 @@ class TuringMachine
 			this.tape[i] = valueBLANK;
 		
 		// reset machine's state.
+		this.inHaltState = false;
 		this.state = valueSTART;
 		this.position = this.size/2;
 	}
@@ -135,6 +136,7 @@ class TuringMachine
 	{	
 		int i = 0;
 		Rule t = null;
+		inHaltState = false;
 		
 		while(i < times)
 		{
@@ -187,15 +189,12 @@ class TuringMachine
 	
 	protected void end(String message)
 	{
+		inHaltState = true;
 		printMachine();
 
 		// At the end, we reset the machine's state to 0.
 		this.state = valueSTART;
 		System.out.println("E: 0 -> END: \""+message+"\"");
-		
-		
-		Scanner in = new Scanner(System.in);
-		in.next();
 	}
 	
 	
