@@ -19,25 +19,28 @@ import java.util.Scanner;
 
 public class Turing
 {
-    public static void main (String[] args)
-    {   
-        Scanner in = new Scanner (System.in);
-        Parser parse;
-        int [] tape;
+	
+	public static Parser getProgramFrom(Scanner in)
+	{
+		Parser parse;
         boolean b;
-
-        
         do {
-            // GET AND PARSE PROGRAM
             System.out.print("Introduce el programa: ");
             String filename = in.nextLine();
             parse = new Parser();
             b = parse.readFile(filename);
         } while( !b );
         
-        
+        return parse;
+	}
+	
+	
+	public static int[] getTapeFrom(Scanner in)
+	{
+        int [] tape;
+        boolean b;
+
         do {
-            // GET TAPE AND VALIDATE
         	b = true;
             System.out.print("Introduce la cinta: ");
             String cinta = in.nextLine();
@@ -54,6 +57,19 @@ public class Turing
     		}
         } while( !b );
         
+        return tape;
+	}
+	
+    public static void main (String[] args)
+    {   
+    	// CREATE SCANNER
+        Scanner in = new Scanner (System.in);
+        
+        // GET AND PARSE PROGRAM
+        Parser parse = getProgramFrom(in);
+        
+        // GET TAPE AND VALIDATE
+        int [] tape = getTapeFrom(in);
         
         // CREATE MACHINE FROM PARSER
         TuringMachine machine = new TuringMachine(parse, 50);
