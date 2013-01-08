@@ -195,7 +195,7 @@ class Parser
 	 * @param min minimo valor del int para validacion.
 	 * @param max maximo valor del int para validacion.
 	 */
-	protected int parseZone(String subZone, int min, int max)
+	public static int parseZone(String subZone, int min, int max, boolean allowHash)
 	{
 		char first = subZone.charAt(0);
 		switch(first) {
@@ -220,11 +220,21 @@ class Parser
 			
 		//NUMBER
 		default:
-			int r = Integer.parseInt(subZone);
-			if(r < min || r > max)
-				throw new IllegalStateException("Out of range ["+min+", "+max+"]");
-			
+		{
+			int r;
+			try {
+				r = Integer.parseInt(subZone);
+				if(r < min || r > max)
+					throw new IllegalStateException("Out of range ["+min+", "+max+"]");
+				
+			} catch(NumberFormatException  e) {
+				if(allowHash)
+					r = subZone.hashCode();
+				else
+					throw e;
+			}
 			return r;
+		}
 		}
 	}
 	
