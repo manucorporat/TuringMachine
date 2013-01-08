@@ -37,14 +37,9 @@ public class Turing
 			tape[i] = Integer.parseInt(numbers[i]);
 
         machine.loadTape(tape);
-        requestStep (machine);
-    	
-    	
-    	
-    	//TuringMachine machine = new TuringMachine("toDecimal", 50);
-        //int [] tape = {1,1,1,1,0,1,0,0,0,0,1,0,0,1,0,0,0,0,0,0};
-        //machine.loadTape(tape);
-        //machine.run();
+        
+        GridManager manager = new GridManager(machine);
+    	manager.show();
     }
     
     
