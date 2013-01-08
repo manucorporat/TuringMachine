@@ -1,3 +1,4 @@
+import java.util.Scanner;
 
 class TuringMachine
 {
@@ -191,6 +192,10 @@ class TuringMachine
 		// At the end, we reset the machine's state to 0.
 		this.state = valueSTART;
 		System.out.println("E: 0 -> END: \""+message+"\"");
+		
+		
+		Scanner in = new Scanner(System.in);
+		in.next();
 	}
 	
 	
