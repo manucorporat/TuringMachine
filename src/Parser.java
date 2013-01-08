@@ -103,10 +103,14 @@ class Parser
 	 * Inicializa un objeto de tipo parser.
 	 * @param filename el programa a parsear.
 	 */
-	Parser(String filename)
-	{
+	Parser() {
 		// allocate array of references
 		this.rules = new Rule[maxRules];
+	}
+	
+	Parser(String filename)
+	{
+		this();
 		readFile(filename);
 	}
 	
@@ -254,8 +258,8 @@ class Parser
 	 */
 	public void print(Rule t)
 	{
-		//t.print();
-		t.explain();
+		t.print();
+		//t.explain();
 	}
 }
 

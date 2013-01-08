@@ -19,41 +19,69 @@ import java.util.Scanner;
 
 public class Turing
 {
+	
+	public static Parser getProgramFrom(Scanner in)
+	{
+		Parser parse;
+        boolean b;
+        do {
+            System.out.print("Introduce el programa: ");
+            String filename = in.nextLine();
+            parse = new Parser();
+            b = parse.readFile(filename);
+        } while( !b );
+        
+        return parse;
+	}
+	
+	
+	public static int[] getTapeFrom(Scanner in)
+	{
+        int [] tape;
+        boolean b;
+
+        do {
+        	b = true;
+            System.out.print("Introduce la cinta: ");
+            String cinta = in.nextLine();
+    		String[] numbers = cinta.split("\\s+");
+    		tape = new int[numbers.length];
+    		
+    		try {
+        		for(int i = 0; i < numbers.length; ++i)
+        			tape[i] = Integer.parseInt(numbers[i]);
+        		
+    		} catch(Exception e) {
+    			System.out.println("Tape bad format.");
+    			b = false;
+    		}
+        } while( !b );
+        
+        return tape;
+	}
+	
+	
     public static void main (String[] args)
     {   
+    	// CREATE SCANNER
         Scanner in = new Scanner (System.in);
-        System.out.print("Introduce el programa: ");
         
-        // PARSE FILENAME
-        String filename = in.nextLine();
-        TuringMachine machine = new TuringMachine(filename, 50);
+        // GET AND PARSE PROGRAM
+        Parser parse = getProgramFrom(in);
         
-        // PARSE TAPE
-        System.out.print("Introduce la cinta: ");
-        String cinta = in.nextLine();
-		String[] numbers = cinta.split("\\s+");
-		int [] tape = new int[numbers.length];
-		for(int i = 0; i < numbers.length; ++i)
-			tape[i] = Integer.parseInt(numbers[i]);
-
+        // GET TAPE AND VALIDATE
+        int [] tape = getTapeFrom(in);
+        
+        // CREATE MACHINE FROM PARSER
+        TuringMachine machine = new TuringMachine(parse, 50);
+        
+        // LOAD TAPE
         machine.loadTape(tape);
-        requestStep (machine);
-    	
-    	
-    	
-    	//TuringMachine machine = new TuringMachine("toDecimal", 50);
-        //int [] tape = {1,1,1,1,0,1,0,0,0,0,1,0,0,1,0,0,0,0,0,0};
-        //machine.loadTape(tape);
-        //machine.run();
-    }
-    
-    
-    public static void requestStep (TuringMachine m){
-
-        Scanner in = new Scanner (System.in);
-        while (true) {
-        	int c = in.nextInt();
-        	m.step(c);
-        }
+        
+        // CREATE GRIDWORLD INTERFACE
+        GridManager manager = new GridManager(machine);
+        
+        // MAKE WORLD VISIBLE
+    	manager.show();
     }
 }

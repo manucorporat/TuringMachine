@@ -34,14 +34,18 @@ class TuringMachine
 	}
 	
 	
-	TuringMachine (String filename, int t)
+	TuringMachine (Parser parser, int t)
 	{
 		this(t);
 
-		// load and parse program.
-        Parser p = new Parser (filename);
-        if(p.hasRules())
-        	loadRules(p.getRules(), p.getNumberOfRules());
+        if(parser.hasRules())
+        	loadRules(parser.getRules(), parser.getNumberOfRules());
+	}
+	
+	
+	TuringMachine (String filename, int t)
+	{
+		this(new Parser (filename), t);
 	}
 	
 	
@@ -54,6 +58,12 @@ class TuringMachine
 	public int getPosition()
 	{
 		return this.position;
+	}
+	
+	
+	public int getState()
+	{
+		return this.state;
 	}
 	
 	
