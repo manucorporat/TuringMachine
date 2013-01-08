@@ -22,33 +22,49 @@ public class Turing
     public static void main (String[] args)
     {   
         Scanner in = new Scanner (System.in);
-        System.out.print("Introduce el programa: ");
-        
-        // PARSE FILENAME
-        String filename = in.nextLine();
-        TuringMachine machine = new TuringMachine(filename, 50);
-        
-        // PARSE TAPE
-        System.out.print("Introduce la cinta: ");
-        String cinta = in.nextLine();
-		String[] numbers = cinta.split("\\s+");
-		int [] tape = new int[numbers.length];
-		for(int i = 0; i < numbers.length; ++i)
-			tape[i] = Integer.parseInt(numbers[i]);
+        Parser parse;
+        int [] tape;
+        boolean b;
 
+        
+        do {
+            // GET AND PARSE PROGRAM
+            System.out.print("Introduce el programa: ");
+            String filename = in.nextLine();
+            parse = new Parser();
+            b = parse.readFile(filename);
+        } while( !b );
+        
+        
+        do {
+            // GET TAPE AND VALIDATE
+        	b = true;
+            System.out.print("Introduce la cinta: ");
+            String cinta = in.nextLine();
+    		String[] numbers = cinta.split("\\s+");
+    		tape = new int[numbers.length];
+    		
+    		try {
+        		for(int i = 0; i < numbers.length; ++i)
+        			tape[i] = Integer.parseInt(numbers[i]);
+        		
+    		} catch(Exception e) {
+    			System.out.println("Tape bad format.");
+    			b = false;
+    		}
+        } while( !b );
+        
+        
+        // CREATE MACHINE FROM PARSER
+        TuringMachine machine = new TuringMachine(parse, 50);
+        
+        // LOAD TAPE
         machine.loadTape(tape);
         
+        // CREATE GRIDWORLD INTERFACE
         GridManager manager = new GridManager(machine);
+        
+        // MAKE WORLD VISIBLE
     	manager.show();
-    }
-    
-    
-    public static void requestStep (TuringMachine m){
-
-        Scanner in = new Scanner (System.in);
-        while (true) {
-        	int c = in.nextInt();
-        	m.step(c);
-        }
     }
 }
