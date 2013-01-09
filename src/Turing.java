@@ -74,7 +74,7 @@ public class Turing
         
         
         // CREATE MACHINE FROM PARSER
-        TuringMachine machine = new TuringMachine(parse, 50);
+        TuringMachine machine = new TuringMachine(parse, 100);
         
         // LOAD TAPE
         machine.loadTape(tape);
@@ -82,7 +82,7 @@ public class Turing
         
         // CREATE GRIDWORLD INTERFACE
         // this connects the TuringMachine with Gridworld
-        GridManager manager = new GridManager(machine, 6000);
+        GridManager manager = new GridManager(machine, -1);
         
         // MAKE WORLD VISIBLE
     	manager.show();
