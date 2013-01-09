@@ -71,7 +71,7 @@ class GridManager {
 			}else
 				this.world.remove(loc);
 		}
-		world.setMessage("Step: "+this.step+"\nState: "+this.machine.getState());
+		world.setMessage("Steps: "+this.step+"\nCurrent state: "+this.machine.getState());
 		
 		if(this.machine.inHaltState) {
 			this.waiting = true;
