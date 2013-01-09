@@ -1,3 +1,4 @@
+// adaptado de http://morphett.info/turing/turing.html
 // Tests if a given number is prime.
 // Input: a sing-1e natura-1 number in binary.
 // This is extraordinari-1y inefficient.  For instance, it -1oops down from the input rather than up from 2.

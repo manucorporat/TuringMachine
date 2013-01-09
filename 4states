@@ -1,10 +1,10 @@
 // adaptado de http://morphett.info/turing/turing.html
 0 * a * * 
 a _ b 1 1
-a 1 b 1 -1
+a 1 b * -1
 b _ a 1 -1
 b 1 c _ -1
 c _ h 1 1
-c 1 4 1 -1
-4 _ 4 1 1
+c 1 4 * -1
+4 _ * 1 1
 4 1 a _ 1
