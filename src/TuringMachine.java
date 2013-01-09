@@ -150,7 +150,7 @@ class TuringMachine
 				
 			}else
 			{
-				printMachine();
+				//printMachine();
 
 				// update symbol
 				if(t.newSymbol != valueANY)
