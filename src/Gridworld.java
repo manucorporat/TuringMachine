@@ -1,5 +1,6 @@
 
 import java.awt.Color;
+
 import info.gridworld.actor.*;
 import info.gridworld.grid.BoundedGrid;
 import info.gridworld.grid.Location;
@@ -12,6 +13,7 @@ class GridManager {
 	public long stoptime;
 	public long timestamp;
 	boolean waiting;
+	public int step;
 	
 	GridManager(TuringMachine machine, long stopTime)
 	{		
@@ -26,6 +28,7 @@ class GridManager {
 			this.stoptime = stopTime;
 		
 		this.waiting = false;
+		this.step = 0;
 		
 		updateItems();
 	}
@@ -68,6 +71,7 @@ class GridManager {
 			}else
 				this.world.remove(loc);
 		}
+		world.setMessage("Step: "+this.step+"\nState: "+this.machine.getState());
 		
 		if(this.machine.inHaltState) {
 			this.waiting = true;
@@ -100,6 +104,7 @@ class Reader extends Bug
 
 		if(!manager.waiting) {
 			this.manager.machine.step(1);
+			++this.manager.step;
 			this.manager.updateItems();
 		}
 	}
