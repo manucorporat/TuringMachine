@@ -128,7 +128,11 @@ class TuringMachine
 		
 	
 	public int run () {
-		return step(Integer.MAX_VALUE);
+		long timestamp = System.currentTimeMillis();
+		int steps = step(Integer.MAX_VALUE);
+		float s = (System.currentTimeMillis() - timestamp)/1000.0f;
+		System.out.println(s+" segundos.");
+		return steps;
 	}
 	
 	

@@ -79,6 +79,7 @@ public class Turing
         // LOAD TAPE
         machine.loadTape(tape);
         
+        //machine.run();
         
         // CREATE GRIDWORLD INTERFACE
         // this connects the TuringMachine with Gridworld
