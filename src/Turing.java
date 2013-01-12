@@ -16,10 +16,8 @@
 
 import java.util.Scanner;
 
-
 public class Turing
 {
-	
 	public static Parser getProgramFrom(Scanner in)
 	{
 		Parser parse;
@@ -38,16 +36,16 @@ public class Turing
 	public static int[] getTapeFrom(Scanner in)
 	{
         int [] tape;
-        boolean isOk = true;
+        boolean isOk;
 
         do {
             System.out.print("Introduce la cinta: ");
             String cinta = in.nextLine();
     		String[] numbers = cinta.split("\\s+");
     		tape = new int[numbers.length];
-    		
+        	isOk = true;
+
     		try {
-            	isOk = true;
         		for(int i = 0; i < numbers.length; ++i)
         			tape[i] = Parser.parseZone(numbers[i], 0, 9, false);
         		

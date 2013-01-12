@@ -62,15 +62,14 @@ class GridManager {
 		for(int i = 0; i < this.machine.size; ++i)
 		{
 			Location loc = new Location(0, i);
-			Actor r = null;
 			
-			if(tape[i] != TuringMachine.valueBLANK) {
-				r = createFor(tape[i]);
-				this.world.add(loc, r);
-
-			}else
+			if(tape[i] != TuringMachine.valueBLANK)
+				this.world.add(loc, createFor(tape[i]));
+			else
 				this.world.remove(loc);
 		}
+		
+		// UPDATE MESSAGE
 		world.setMessage("Steps: "+this.step+"\nCurrent state: "+this.machine.getState());
 		
 		if(this.machine.inHaltState) {
