@@ -85,7 +85,6 @@ class Rule
 
 class Parser
 {
-	private final int maxRules = 200;
 	public final static char charA = 'a';
 	public final static char charB = 'b';
 	public final static char charC = 'c';
@@ -95,6 +94,9 @@ class Parser
 	public final static char charANY = '*';
 	public final static char charEND = 'h';
 	public final static char charBLANK = '_';
+	
+	private final int maxRules = 200;
+
 
 	protected Rule [] rules;
 	protected int nuRules;

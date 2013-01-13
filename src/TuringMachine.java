@@ -13,7 +13,6 @@ class TuringMachine
 	public final static int valueX = -9;
 	public final static int valueY = -10;
 
-
 	protected Rule[] rules;
 	protected int [] tape;
 	protected int nuRules;
@@ -99,7 +98,7 @@ class TuringMachine
 			return false;
 		
 		this.position = (this.size-c.length)/2;
-		for (int i = 0;i < c.length; ++i)
+		for (int i = 0; i < c.length; ++i)
 			this.tape[i+this.position] = c[i];
 		
 		return true;
@@ -127,7 +126,8 @@ class TuringMachine
 	}
 		
 	
-	public int run () {
+	public int run ()
+	{
 		long timestamp = System.currentTimeMillis();
 		int steps = step(Integer.MAX_VALUE);
 		float s = (System.currentTimeMillis() - timestamp)/1000.0f;
