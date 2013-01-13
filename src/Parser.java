@@ -213,7 +213,7 @@ class Parser
 		case charX: return TuringMachine.valueX;
 		case charY: return TuringMachine.valueY;
 		
-		// SPEACIL CHARCHTS
+		// SPEACIL CHARS
 		case charANY:
 			return TuringMachine.valueANY;
 			
@@ -223,16 +223,19 @@ class Parser
 		case charBLANK:
 			return TuringMachine.valueBLANK;
 			
-		//NUMBER
+		// NUMBER
 		default:
 		{
 			int r;
 			try {
+				// Trying to parse int
 				r = Integer.parseInt(subZone);
 				if(r < min || r > max)
 					throw new IllegalStateException("Out of range ["+min+", "+max+"]");
 				
 			} catch(NumberFormatException  e) {
+				// If string is not a int,
+				// we can return the string's hash if allowed.
 				if(allowHash)
 					r = subZone.hashCode();
 				else

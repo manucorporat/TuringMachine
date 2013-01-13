@@ -138,34 +138,37 @@ class TuringMachine
 	
 	public int step (int times)
 	{	
-		int i = 0;
-		Rule t = null;
+		assert(times >= 0);
+		
+		int step = 0;
+		Rule rule = null;
 		inHaltState = false;
 		
-		while(i < times)
+		while(step < times)
 		{
 			// Find rule for current state and current symbol.
-			t = findRule(this.state, this.tape[this.position]);
+			rule = findRule(this.state, this.tape[this.position]);
 			
 			// if the rule was not found, then we stop the machine.
-			if(t == null ) {
+			if(rule == null ) {
 				end("Not rule was found. turing machine aborted.");
-				times = i; // break; (but we can not use break;)
+				times = step; // break; (but we can not use break;)
 				
 			}else
 			{
 				//printMachine();
 
 				// update symbol
-				if(t.newSymbol != valueANY)
-					this.tape[this.position] = t.newSymbol;
+				if(rule.newSymbol != valueANY)
+					this.tape[this.position] = rule.newSymbol;
 				
 				
 				// update machine's position
-				if (t.direction == -1) 
+				if (rule.direction == -1) 
 					--this.position;
-				else if(t.direction == 1)
+				else if(rule.direction == 1)
 					++this.position;
+				// else: don't move
 				
 				
 				
@@ -174,20 +177,20 @@ class TuringMachine
 					
 					this.position = 0;
 					end("Tape overflow, turing machine aborted.");
-					times = i; // break; (but we can not use break;)
+					times = step; // break; (but we can not use break;)
 					
 				// check if new status is END value.
-				}else if(t.newState == valueEND) {
+				}else if(rule.newState == valueEND) {
 					
-					end("End symbol found. Stopped succesfully. "+i+" steps.");
-					times = i; // break; (but we can not use break;)
+					end("End symbol found. Stopped succesfully. "+step+" steps.");
+					times = step; // break; (but we can not use break;)
 					
-				}else if(t.newState != valueANY)
-						this.state = t.newState;
+				}else if(rule.newState != valueANY)
+						this.state = rule.newState;
 			}
-			++i;
+			++step;
 		}
-		return i;
+		return step;
 	}
 	
 	
