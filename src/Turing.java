@@ -47,7 +47,7 @@ public class Turing
 
     		try {
         		for(int i = 0; i < numbers.length; ++i)
-        			tape[i] = Parser.parseZone(numbers[i], 0, 9, false);
+        			tape[i] = Parser.parseZone(numbers[i], 0, 1, false);
         		
     		} catch(Exception e) {
     			System.out.println("Error parsing tape: " + e.getMessage());
