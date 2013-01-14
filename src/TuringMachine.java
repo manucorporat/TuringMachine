@@ -156,6 +156,8 @@ class TuringMachine
 				
 			}else
 			{
+				rule.explain();
+
 				//printMachine();
 
 				// update symbol
