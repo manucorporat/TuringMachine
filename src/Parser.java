@@ -202,48 +202,36 @@ class Parser
 	 */
 	public static int parseZone(String subZone, int min, int max, boolean allowHash)
 	{
-		char first = subZone.charAt(0);
-		switch(first) {
-		
-		// ALIAS
-		case charA: return TuringMachine.valueA;
-		case charB: return TuringMachine.valueB;
-		case charC: return TuringMachine.valueC;
-		case charD: return TuringMachine.valueD;
-		case charX: return TuringMachine.valueX;
-		case charY: return TuringMachine.valueY;
-		
-		// SPEACIL CHARS
-		case charANY:
-			return TuringMachine.valueANY;
-			
-		case charEND:
-			return TuringMachine.valueEND;
-			
-		case charBLANK:
-			return TuringMachine.valueBLANK;
-			
-		// NUMBER
-		default:
-		{
-			int r;
-			try {
-				// Trying to parse int
-				r = Integer.parseInt(subZone);
-				if(r < min || r > max)
-					throw new IllegalStateException("Out of range ["+min+", "+max+"]");
-				
-			} catch(NumberFormatException  e) {
-				// If string is not a int,
-				// we can return the string's hash if allowed.
-				if(allowHash)
-					r = subZone.hashCode();
-				else
-					throw e;
+		if(subZone.length() == 1) {
+			char first = subZone.charAt(0);
+			switch(first) {
+			// ALIAS
+			case charA: return TuringMachine.valueA;
+			case charB: return TuringMachine.valueB;
+			case charC: return TuringMachine.valueC;
+			case charD: return TuringMachine.valueD;
+			case charX: return TuringMachine.valueX;
+			case charY: return TuringMachine.valueY;
+			default: break;
 			}
-			return r;
 		}
+		
+		int r;
+		try {
+			// Trying to parse int
+			r = Integer.parseInt(subZone);
+			if(r < min || r > max)
+				throw new IllegalStateException("Out of range ["+min+", "+max+"]");
+			
+		} catch(NumberFormatException  e) {
+			// If string is not a int,
+			// we can return the string's hash if allowed.
+			if(allowHash)
+				r = subZone.hashCode();
+			else
+				throw e;
 		}
+		return r;
 	}
 	
 	
