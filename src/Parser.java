@@ -212,6 +212,16 @@ class Parser
 			case charD: return TuringMachine.valueD;
 			case charX: return TuringMachine.valueX;
 			case charY: return TuringMachine.valueY;
+			// SPEACIL CHARS
+			case charANY:
+				return TuringMachine.valueANY;
+				
+			case charEND:
+				return TuringMachine.valueEND;
+				
+			case charBLANK:
+				return TuringMachine.valueBLANK;
+				
 			default: break;
 			}
 		}
