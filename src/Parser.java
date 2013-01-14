@@ -85,7 +85,6 @@ class Rule
 
 class Parser
 {
-	private final int maxRules = 200;
 	public final static char charA = 'a';
 	public final static char charB = 'b';
 	public final static char charC = 'c';
@@ -95,6 +94,9 @@ class Parser
 	public final static char charANY = '*';
 	public final static char charEND = 'h';
 	public final static char charBLANK = '_';
+	
+	private final int maxRules = 200;
+
 
 	protected Rule [] rules;
 	protected int nuRules;
@@ -104,10 +106,14 @@ class Parser
 	 * Inicializa un objeto de tipo parser.
 	 * @param filename el programa a parsear.
 	 */
-	Parser(String filename)
-	{
+	Parser() {
 		// allocate array of references
 		this.rules = new Rule[maxRules];
+	}
+	
+	Parser(String filename)
+	{
+		this();
 		readFile(filename);
 	}
 	
@@ -145,13 +151,11 @@ class Parser
 	 * @return true si el parseado se completo 
 	 */
 	public boolean readFile(String filename)
-	{
-		System.out.println("Parsing \""+filename+"\"");
-		
+	{		
 		this.nuRules = 0;
 		try {
 			Scanner sc = new Scanner(new File(filename));
-			
+			System.out.println("Parsing \""+filename+"\"");
 			while (sc.hasNextLine()) {
 				
 				// get line
@@ -173,7 +177,7 @@ class Parser
 						parseLine(strLine, t);
 						print(t);
 					} catch(Exception e) {
-						System.out.println("Error at line "+(this.nuRules+1));
+						System.out.println("Error at line "+(this.nuRules+1)+".");
 						throw e;
 					}
 					++this.nuRules;
@@ -181,9 +185,10 @@ class Parser
 			}
 			
 		} catch (Exception e) {
-			System.err.println("Error: " + e.getMessage());
+			System.out.println("Error: " + e.getMessage());
 			return false;
 		}
+		System.out.println(this.nuRules+" rules parsed succesfully.");
 		return true;
 	}
 	
@@ -197,45 +202,46 @@ class Parser
 	 */
 	public static int parseZone(String subZone, int min, int max, boolean allowHash)
 	{
-		char first = subZone.charAt(0);
-		switch(first) {
-		
-		// ALIAS
-		case charA: return TuringMachine.valueA;
-		case charB: return TuringMachine.valueB;
-		case charC: return TuringMachine.valueC;
-		case charD: return TuringMachine.valueD;
-		case charX: return TuringMachine.valueX;
-		case charY: return TuringMachine.valueY;
-		
-		// SPEACIL CHARCHTS
-		case charANY:
-			return TuringMachine.valueANY;
-			
-		case charEND:
-			return TuringMachine.valueEND;
-			
-		case charBLANK:
-			return TuringMachine.valueBLANK;
-			
-		//NUMBER
-		default:
-		{
-			int r;
-			try {
-				r = Integer.parseInt(subZone);
-				if(r < min || r > max)
-					throw new IllegalStateException("Out of range ["+min+", "+max+"]");
+		if(subZone.length() == 1) {
+			char first = subZone.charAt(0);
+			switch(first) {
+			// ALIAS
+			case charA: return TuringMachine.valueA;
+			case charB: return TuringMachine.valueB;
+			case charC: return TuringMachine.valueC;
+			case charD: return TuringMachine.valueD;
+			case charX: return TuringMachine.valueX;
+			case charY: return TuringMachine.valueY;
+			// SPEACIL CHARS
+			case charANY:
+				return TuringMachine.valueANY;
 				
-			} catch(NumberFormatException  e) {
-				if(allowHash)
-					r = subZone.hashCode();
-				else
-					throw e;
+			case charEND:
+				return TuringMachine.valueEND;
+				
+			case charBLANK:
+				return TuringMachine.valueBLANK;
+				
+			default: break;
 			}
-			return r;
 		}
+		
+		int r;
+		try {
+			// Trying to parse int
+			r = Integer.parseInt(subZone);
+			if(r < min || r > max)
+				throw new IllegalStateException("Out of range ["+min+", "+max+"]");
+			
+		} catch(NumberFormatException  e) {
+			// If string is not a int,
+			// we can return the string's hash if allowed.
+			if(allowHash)
+				r = subZone.hashCode();
+			else
+				throw e;
 		}
+		return r;
 	}
 	
 	
@@ -253,11 +259,11 @@ class Parser
 		if(zones.length < 5)
 			throw new IllegalStateException("Missing 5-tuplas rule.");
 		
-		t.machineState	= parseZone(zones[0], 0, 10000, true);
+		t.machineState	= parseZone(zones[0], TuringMachine.valueSTART, 10000, true);
 		t.tapeSymbol	= parseZone(zones[1], 0, 10000, false);
-		t.newState		= parseZone(zones[4], 0, 10000, true);
-		t.newSymbol		= parseZone(zones[2], 0, 10000, false);
-		t.direction		= parseZone(zones[3], -1, 1, false);
+		t.newState		= parseZone(zones[2], TuringMachine.valueSTART, 10000, true);
+		t.newSymbol		= parseZone(zones[3], 0, 10000, false);
+		t.direction		= parseZone(zones[4], -1, 1, false);
 	}
 
 	
@@ -266,8 +272,8 @@ class Parser
 	 */
 	public void print(Rule t)
 	{
-		//t.print();
-		t.explain();
+		t.print();
+		//t.explain();
 	}
 }
 

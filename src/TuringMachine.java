@@ -13,13 +13,13 @@ class TuringMachine
 	public final static int valueX = -9;
 	public final static int valueY = -10;
 
-
 	protected Rule[] rules;
 	protected int [] tape;
 	protected int nuRules;
 	protected int state; 
 	protected int position;
 	protected int size;
+	public boolean inHaltState;
 	
 	
 	TuringMachine (int t)
@@ -35,14 +35,18 @@ class TuringMachine
 	}
 	
 	
-	TuringMachine (String filename, int t)
+	TuringMachine (Parser parser, int t)
 	{
 		this(t);
 
-		// load and parse program.
-        Parser p = new Parser (filename);
-        if(p.hasRules())
-        	loadRules(p.getRules(), p.getNumberOfRules());
+        if(parser.hasRules())
+        	loadRules(parser.getRules(), parser.getNumberOfRules());
+	}
+	
+	
+	TuringMachine (String filename, int t)
+	{
+		this(new Parser (filename), t);
 	}
 	
 	
@@ -58,6 +62,12 @@ class TuringMachine
 	}
 	
 	
+	public int getState()
+	{
+		return this.state;
+	}
+	
+	
 	public void reset()
 	{
 		// reset tape, blank state is in all fields.
@@ -66,6 +76,7 @@ class TuringMachine
 			this.tape[i] = valueBLANK;
 		
 		// reset machine's state.
+		this.inHaltState = false;
 		this.state = valueSTART;
 		this.position = this.size/2;
 	}
@@ -87,7 +98,7 @@ class TuringMachine
 			return false;
 		
 		this.position = (this.size-c.length)/2;
-		for (int i = 0;i < c.length; ++i)
+		for (int i = 0; i < c.length; ++i)
 			this.tape[i+this.position] = c[i];
 		
 		return true;
@@ -115,40 +126,51 @@ class TuringMachine
 	}
 		
 	
-	public int run () {
-		return step(Integer.MAX_VALUE);
+	public int run ()
+	{
+		long timestamp = System.currentTimeMillis();
+		int steps = step(Integer.MAX_VALUE);
+		float s = (System.currentTimeMillis() - timestamp)/1000.0f;
+		System.out.println(s+" segundos.");
+		return steps;
 	}
 	
 	
 	public int step (int times)
 	{	
-		int i = 0;
-		Rule t = null;
+		assert(times >= 0);
 		
-		while(i < times)
+		int step = 0;
+		Rule rule = null;
+		inHaltState = false;
+		
+		while(step < times)
 		{
 			// Find rule for current state and current symbol.
-			t = findRule(this.state, this.tape[this.position]);
+			rule = findRule(this.state, this.tape[this.position]);
 			
 			// if the rule was not found, then we stop the machine.
-			if(t == null ) {
+			if(rule == null ) {
 				end("Not rule was found. turing machine aborted.");
-				times = i; // break; (but we can not use break;)
+				times = step; // break; (but we can not use break;)
 				
 			}else
 			{
-				printMachine();
+				rule.explain();
+
+				//printMachine();
 
 				// update symbol
-				if(t.newSymbol != valueANY)
-					this.tape[this.position] = t.newSymbol;
+				if(rule.newSymbol != valueANY)
+					this.tape[this.position] = rule.newSymbol;
 				
 				
 				// update machine's position
-				if (t.direction == -1) 
+				if (rule.direction == -1) 
 					--this.position;
-				else if(t.direction == 1)
+				else if(rule.direction == 1)
 					++this.position;
+				// else: don't move
 				
 				
 				
@@ -157,25 +179,26 @@ class TuringMachine
 					
 					this.position = 0;
 					end("Tape overflow, turing machine aborted.");
-					times = i; // break; (but we can not use break;)
+					times = step; // break; (but we can not use break;)
 					
 				// check if new status is END value.
-				}else if(t.newState == valueEND) {
+				}else if(rule.newState == valueEND) {
 					
-					end("End symbol found. Stopped succesfully. "+i+" steps.");
-					times = i; // break; (but we can not use break;)
+					end("End symbol found. Stopped succesfully. "+step+" steps.");
+					times = step; // break; (but we can not use break;)
 					
-				}else if(t.newState != valueANY)
-						this.state = t.newState;
+				}else if(rule.newState != valueANY)
+						this.state = rule.newState;
 			}
-			++i;
+			++step;
 		}
-		return i;
+		return step;
 	}
 	
 	
 	protected void end(String message)
 	{
+		inHaltState = true;
 		printMachine();
 
 		// At the end, we reset the machine's state to 0.
