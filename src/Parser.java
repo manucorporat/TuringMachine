@@ -127,6 +127,21 @@ class Parser
 	}
 
 	
+	boolean postValidation()
+	{
+		for(int i = 0; i < this.nuRules-1; ++i) {
+			for(int w = i+1; w < this.nuRules; ++w) {
+				
+				Rule a = this.rules[i];
+				Rule b = this.rules[w];
+				if(a.machineState == b.machineState &&
+				a.tapeSymbol == b.tapeSymbol)
+					return false;
+			}
+		}
+		return true;
+	}
+	
 	/**
 	 * Retorna un array con todas la reglas parseadas.
 	 */
@@ -186,6 +201,11 @@ class Parser
 			
 		} catch (Exception e) {
 			System.out.println("Error: " + e.getMessage());
+			return false;
+		}
+		
+		if(!postValidation()) {
+			System.out.println("Error: Duplicated rule.");
 			return false;
 		}
 		System.out.println(this.nuRules+" rules parsed succesfully.");
