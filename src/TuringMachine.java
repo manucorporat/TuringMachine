@@ -92,6 +92,12 @@ class TuringMachine
 	}
 	
 	
+	public void setPosition(int position)
+	{
+		this.position = position;
+	}
+	
+	
 	public boolean loadTape (int [] c)
 	{
 		if (this.size < c.length)
