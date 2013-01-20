@@ -44,24 +44,26 @@ public class Turing
 	
 	public static int[] getTapeFrom(Scanner in)
 	{
-        int [] tape;
+        int [] tape = null;
         boolean isOk;
 
         do {
             System.out.print("Introduce la cinta: ");
             String cinta = in.nextLine();
-    		String[] numbers = cinta.split("\\s+");
-    		tape = new int[numbers.length];
         	isOk = true;
+            if(cinta.length() > 0){
+        		String[] numbers = cinta.split("\\s+");
+        		tape = new int[numbers.length];
 
-    		try {
-        		for(int i = 0; i < numbers.length; ++i)
-        			tape[i] = Parser.parseZone(numbers[i], 0, 1, false);
-        		
-    		} catch(Exception e) {
-    			System.out.println("Error parsing tape: " + e.getMessage());
-    			isOk = false;
-    		}
+        		try {
+            		for(int i = 0; i < numbers.length; ++i)
+            			tape[i] = Parser.parseZone(numbers[i], 0, 1, false);
+            		
+        		} catch(Exception e) {
+        			System.out.println("Error parsing tape: " + e.getMessage());
+        			isOk = false;
+        		}
+            }
         } while( !isOk );
         
         return tape;

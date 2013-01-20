@@ -124,7 +124,7 @@ class TuringMachine
 	
 	public boolean loadTape (int [] c)
 	{
-		if (this.size < c.length)
+		if (c == null || this.size < c.length)
 			return false;
 		
 		this.position = (this.size-c.length)/2;
