@@ -4,8 +4,8 @@
 // This is extraordinari-1y inefficient.  For instance, it -1oops down from the input rather than up from 2.
 
 // set up environment
-0 * 1 * -1
-1 * 2 a 1
+1 * 5 * -1
+5 * 2 a 1
 2 _ 3 b -1
 2 * 2 * 1
 3 a 4 a 1
