@@ -1,5 +1,5 @@
 // adaptado de http://morphett.info/turing/turing.html
-0 * a * * 
+1 * a * * 
 a _ b 1 1
 a 1 b * -1
 b _ a 1 -1

@@ -1,10 +1,10 @@
 // Creado por Manuel Martinez-Almeida
 // Cambia los 0s por 1s y los 1s por 0
-0 1 * 0 1
-0 0 * 1 1
+1 1 * 0 1
+1 1 * 1 1
 // Si se encuentra un simbolo en blanco, significa que hemos llegago al final
 // cambiamos el estado a 1 para volver al principio
-0 _ 1 * -1
+1 _ 2 * -1
 // El estado 1, ignora todos los simbolos hasta el primer simbolo en blanco.
-1 _ h _ 1
-1 * * * -1
+2 _ h _ 1
+2 * * * -1

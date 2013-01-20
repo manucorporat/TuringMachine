@@ -1,3 +1,27 @@
+/*
+ * TuringMachine
+ *
+ * Copyright (c) 2012 Manuel Mart’nez-Almeida
+ * Copyright (c) 2012 Jose Maria Pinilla
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 
 import java.util.Scanner;
 import java.io.File;
@@ -127,6 +151,21 @@ class Parser
 	}
 
 	
+	boolean postValidation()
+	{
+		for(int i = 0; i < this.nuRules-1; ++i) {
+			for(int w = i+1; w < this.nuRules; ++w) {
+				
+				Rule a = this.rules[i];
+				Rule b = this.rules[w];
+				if(a.machineState == b.machineState &&
+				a.tapeSymbol == b.tapeSymbol)
+					return false;
+			}
+		}
+		return true;
+	}
+	
 	/**
 	 * Retorna un array con todas la reglas parseadas.
 	 */
@@ -186,6 +225,11 @@ class Parser
 			
 		} catch (Exception e) {
 			System.out.println("Error: " + e.getMessage());
+			return false;
+		}
+		
+		if(!postValidation()) {
+			System.out.println("Error: Duplicated rule.");
 			return false;
 		}
 		System.out.println(this.nuRules+" rules parsed succesfully.");
